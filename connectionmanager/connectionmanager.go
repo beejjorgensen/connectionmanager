@@ -4,9 +4,9 @@ package connectionmanager
 
 import (
 	"container/list"
+	"errors"
 	"fmt"
 	"log"
-	"errors"
 )
 
 // TODO: helper functions for SendMessage?
@@ -23,8 +23,8 @@ type MessageType int32
 const (
 	StopRequest       MessageType = 0
 	StopResponse      MessageType = 1
-	ConnectRequest      MessageType = 2
-	ConnectResponse     MessageType = 3
+	ConnectRequest    MessageType = 2
+	ConnectResponse   MessageType = 3
 	BroadcastRequest  MessageType = 4
 	BroadcastResponse MessageType = 5
 	PollRequest       MessageType = 6
@@ -41,16 +41,16 @@ const messageChannelSize = 50
 // Information about a particular connection
 type Connection struct {
 	// unique ID (UUID-ish) associated with this connection
-	id    string
+	id string
 
 	// channel for receiving messages for this connection
 	pollChannel chan *[]*Message
 
 	// true if the connection is polling 
-	polling     bool
+	polling bool
 
 	// undelivered messages
-	messages    *list.List
+	messages *list.List
 }
 
 // Message payload for Message struct
@@ -158,7 +158,7 @@ func (cm *ConnectionManager) SetActive(active bool) {
 // Create a new ConnectionManager
 func New() *ConnectionManager {
 	cm := &ConnectionManager{
-		connection:           make(map[string]*Connection),
+		connection:     make(map[string]*Connection),
 		messageChannel: make(chan *Message, messageChannelSize),
 	}
 
@@ -193,7 +193,7 @@ func (cm *ConnectionManager) SendMessage(r *Message) *Message {
 	log.Printf("SendMessage: sending %s\n", *r)
 	cm.messageChannel <- r
 	log.Printf("SendMessage: receiving\n")
-	resp := <- r.RChan
+	resp := <-r.RChan
 	log.Printf("SendMessage: received %s\n", *resp)
 
 	close(r.RChan) // necessary?
@@ -231,9 +231,9 @@ func (cm *ConnectionManager) handleConnectRequest(m *Message) {
 	// send response
 	log.Println("ConnectionManager: sending login response")
 	m.RChan <- &Message{
-		Type:     ConnectResponse,
-		Id:       m.Id,
-		Err: nil,
+		Type: ConnectResponse,
+		Id:   m.Id,
+		Err:  nil,
 	}
 	log.Println("ConnectionManager: sent login response")
 }
@@ -243,8 +243,8 @@ func (cm *ConnectionManager) handleStopRequest(m *Message) {
 	log.Println("ConnectionManager: sending stop response")
 
 	m.RChan <- &Message{
-		Type:   StopResponse,
-		Err: nil,
+		Type: StopResponse,
+		Err:  nil,
 	}
 
 	log.Println("ConnectionManager: sent stop response")
@@ -260,8 +260,8 @@ func (cm *ConnectionManager) handlePollRequest(m *Message) {
 		log.Printf("ConnectionManager: unknown user ID for PollMessage: %s\n", m.Id)
 
 		m.RChan <- &Message{
-			Type:    PollResponse,
-			Err: errors.New(fmt.Sprintf("PollRequest: unknown user id: %s", m.Id)),
+			Type: PollResponse,
+			Err:  errors.New(fmt.Sprintf("PollRequest: unknown user id: %s", m.Id)),
 		}
 
 		return
@@ -283,7 +283,7 @@ func (cm *ConnectionManager) handlePollRequest(m *Message) {
 	m.RChan <- &Message{
 		Type:     PollResponse,
 		PollChan: c.pollChannel,
-		Err: nil,
+		Err:      nil,
 	}
 
 	log.Println("ConnectionManager: sent pollmessage response")
@@ -307,8 +307,8 @@ func (cm *ConnectionManager) handleBroadcastRequest(m *Message) {
 	log.Println("ConnectionManager: sending broadcast response")
 
 	m.RChan <- &Message{
-		Type:   BroadcastResponse,
-		Err: nil,
+		Type: BroadcastResponse,
+		Err:  nil,
 	}
 
 	log.Println("ConnectionManager: sent broadcast response")
