@@ -1,8 +1,8 @@
+// A long-polling HTTP chat server
 package main
 
 // TODO:
 //
-// make helper functions for common/all SendRequests
 // get WEBROOT on command line or environment
 // handle users who leave
 // handle idle users
@@ -11,6 +11,7 @@ package main
 
 import (
 	"bufio"
+	"code.google.com/p/go-uuid/uuid"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -23,9 +24,91 @@ import (
 	"usermanager"
 )
 
-const WEBROOT = "/home/beej/src/golang/longpoll/webroot"
+type user struct {
+	name string
+	pubId string // public identifier
+}
 
-var nextGuestNumber int = 1
+// Manages user structs
+type UserManager struct {
+	// Maps id to user
+	user           map[string]*user
+
+	// Maps pubId to id
+	idMap          map[string]string
+
+	// For making anonymous user names
+	nextGuestNumber int
+}
+
+// Add a new user
+//
+// Returns pointer to user
+func (um *UserManager) addUser(id string, name string) *user {
+	u, ok := um.user[id]
+
+	if !ok {
+		u = new(User)
+		u.name = name
+		u.id = id
+		u.pubId = uuid.New() // v4 UUID
+
+		um.idMap[u.pubId] = id
+	}
+
+	return u
+}
+
+
+// Return a user by ID
+func (um *UserManager) getUserById(id string) *user, bool {
+	return um.user[id]
+}
+
+// Return a user by PubID
+func (um *UserManager) getUserByPubId(pid string) *user, bool {
+	id, ok := um.idMap[pid]
+
+	if !ok {
+		return nil, ok
+	}
+
+	return um.getUserById(id)
+}
+
+
+		/*
+
+Old polling response code
+		messageIndex := make([]*Request, l)
+
+		// can't json.Marshal a List, so we put references in a slice:
+		count := 0
+		for e := u.messages.Front(); e != nil; e = e.Next() {
+			msg := e.Value.(*Request)
+			messageIndex[count] = msg
+			count++
+		}
+
+		messages, err := json.Marshal(messageIndex)
+
+		if err != nil {
+			panic(err)
+		}
+
+		// ditch sent messages
+		u.messages.Init()
+
+		log.Printf("UserManager: pollCheck: sending to %s: %s\n", u.id, string(messages))
+		u.pollChannel <- string(messages)
+		log.Printf("UserManager: pollCheck: sending to %s: complete\n", u.id)
+
+		// unmark users as polling
+		u.polling = false
+
+*/
+
+const WEBROOT = "/home/beej/src/golang/longpoll/webroot"
 
 // Web file open error
 type WebFileOpenError struct {
@@ -64,10 +147,8 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	var userName string
 	var resp *usermanager.Request
 
-	// get ID
+	// get passed parameters
 	id := rq.FormValue("id")
-
-	// extract command
 	com := rq.FormValue("command")
 
 	log.Printf("Chat: serving command %s: %s\n", com, id)
@@ -77,7 +158,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 		// extract username
 		userName = rq.FormValue("username")
 
-		// TODO add autogen anon names if unspecified?
+		// autogen anon names if unspecified?
 		if userName == "" {
 			userName = fmt.Sprintf("Guest%d", nextGuestNumber)
 			nextGuestNumber++
