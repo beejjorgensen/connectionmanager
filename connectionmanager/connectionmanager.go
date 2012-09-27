@@ -6,7 +6,7 @@ import (
 	"container/list"
 	"fmt"
 	"log"
-	"strconv"
+	"errors"
 )
 
 // TODO: helper functions for SendMessage?
@@ -44,7 +44,7 @@ type Connection struct {
 	id    string
 
 	// channel for receiving messages for this connection
-	pollChannel chan string
+	pollChannel chan *[]*Message
 
 	// true if the connection is polling 
 	polling     bool
@@ -56,7 +56,7 @@ type Connection struct {
 // Message payload for Message struct
 type MessagePayload map[string]interface{}
 
-// Messages to the ConnectionManager
+// Messages to and from the ConnectionManager
 type Message struct {
 	// Type of message
 	Type MessageType
@@ -73,12 +73,21 @@ type Message struct {
 	// Channel for response
 	RChan chan *Message
 
+	// Channel for polling
+	PollChan chan *[]*Message
+
+	// Generic field for data passing
+	General interface{}
+
 	// Status for SendMessage return
-	ok bool
+	Err error
 }
 
 // Manages connections
 type ConnectionManager struct {
+	// list of connections
+	connection map[string]*Connection
+
 	// the ConnectionManager's incoming message channel
 	messageChannel chan *Message
 
@@ -104,8 +113,8 @@ func (c *Connection) pollCheck() {
 		// ditch sent messages
 		c.messages.Init()
 
-		log.Printf("ConnectionManager: pollCheck: sending to %s: %s\n", c.id, string(messages))
-		c.pollChannel <- messageArray
+		log.Printf("ConnectionManager: pollCheck: sending to %s: %v\n", c.id, c.messages)
+		c.pollChannel <- &messageArray
 		log.Printf("ConnectionManager: pollCheck: sending to %s: complete\n", c.id)
 
 		// unmark connections as polling
@@ -179,7 +188,7 @@ func (cm *ConnectionManager) buildConnectionListResponse() []map[string]interfac
 //
 // to be called from other threads
 func (cm *ConnectionManager) SendMessage(r *Message) *Message {
-	r.RChan := make(chan *Message)
+	r.RChan = make(chan *Message)
 
 	log.Printf("SendMessage: sending %s\n", *r)
 	cm.messageChannel <- r
@@ -195,7 +204,7 @@ func (cm *ConnectionManager) SendMessage(r *Message) *Message {
 
 // Broadcasts a response to all connections
 func (cm *ConnectionManager) broadcast(r *Message) {
-	for _, c := range cm.user {
+	for _, c := range cm.connection {
 		// buffer to all connections
 		c.messages.PushBack(r)
 
@@ -206,22 +215,25 @@ func (cm *ConnectionManager) broadcast(r *Message) {
 
 // Handle a ConnectRequest Message
 func (cm *ConnectionManager) handleConnectRequest(m *Message) {
-	// make a new user if we don't have it
-	if u, present = cm.user[m.Id]; !present {
+	var c *Connection
+	var present bool
+
+	// make a new connection if we don't have it
+	if c, present = cm.connection[m.Id]; !present {
 		c = newConnection(m.Id)
 
-		log.Printf("ConnectionManager: %s: new user\n", m.Id)
+		log.Printf("ConnectionManager: %s: new connection\n", m.Id)
 	}
 
 	// add to the list
-	cm.user[m.Id] = u
+	cm.connection[m.Id] = c
 
 	// send response
 	log.Println("ConnectionManager: sending login response")
 	m.RChan <- &Message{
 		Type:     ConnectResponse,
-		Id:       userId,
-		ok: true,
+		Id:       m.Id,
+		Err: nil,
 	}
 	log.Println("ConnectionManager: sent login response")
 }
@@ -232,7 +244,7 @@ func (cm *ConnectionManager) handleStopRequest(m *Message) {
 
 	m.RChan <- &Message{
 		Type:   StopResponse,
-		ok: true,
+		Err: nil,
 	}
 
 	log.Println("ConnectionManager: sent stop response")
@@ -245,32 +257,33 @@ func (cm *ConnectionManager) handlePollRequest(m *Message) {
 	c, ok := cm.connection[m.Id]
 
 	if !ok {
-		log.Printf("ConnectionManager: unknown user ID for PollMessage: %s\n", userId)
+		log.Printf("ConnectionManager: unknown user ID for PollMessage: %s\n", m.Id)
 
 		m.RChan <- &Message{
 			Type:    PollResponse,
-			ok: false
+			Err: errors.New(fmt.Sprintf("PollRequest: unknown user id: %s", m.Id)),
 		}
-		break
+
+		return
 	}
 
-	// If the user is already polling, it means they've opened a
+	// If the connection is already polling, it means they've opened a
 	// new polling connection. The old one needs to be shut down
 	// before we can continue
 	if c.polling {
 		close(c.pollChannel)
 	}
 
-	// mark user as polling
+	// mark connection as polling
 	c.polling = true
-	c.pollChannel = make(chan string)
+	c.pollChannel = make(chan *[]*Message)
 
 	log.Println("ConnectionManager: sending pollmessage response")
 
-	c.RChan <- &Message{
+	m.RChan <- &Message{
 		Type:     PollResponse,
-		RChan: c.pollChannel,
-		ok: true,
+		PollChan: c.pollChannel,
+		Err: nil,
 	}
 
 	log.Println("ConnectionManager: sent pollmessage response")
@@ -285,8 +298,6 @@ func (cm *ConnectionManager) handlePollRequest(m *Message) {
 //
 // Warning: changes m.Type to Broadcast
 func (cm *ConnectionManager) handleBroadcastRequest(m *Message) {
-	c = cm.user[userId]
-
 	// change type from BroadcastRequest to Broadcast
 	m.Type = Broadcast
 
@@ -295,9 +306,9 @@ func (cm *ConnectionManager) handleBroadcastRequest(m *Message) {
 
 	log.Println("ConnectionManager: sending broadcast response")
 
-	c.RChan <- &Message{
+	m.RChan <- &Message{
 		Type:   BroadcastResponse,
-		ok: true,
+		Err: nil,
 	}
 
 	log.Println("ConnectionManager: sent broadcast response")
@@ -306,16 +317,13 @@ func (cm *ConnectionManager) handleBroadcastRequest(m *Message) {
 // Manages connections (runs as a goroutine)
 func runConnectionManager(cm *ConnectionManager) {
 	for {
-		var c *Connection
-		var present bool
-
 		log.Println("ConnectionManager: waiting for message")
 
 		message := <-cm.messageChannel
 
 		log.Printf("ConnectionManager: got message: %s\n", message)
 
-		switch messageType {
+		switch message.Type {
 
 		case ConnectRequest:
 			cm.handleConnectRequest(message)

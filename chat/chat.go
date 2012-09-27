@@ -3,6 +3,7 @@ package main
 
 // TODO:
 //
+// error handling on all the json.Marshal calls
 // get WEBROOT on command line or environment
 // handle users who leave
 // handle idle users
@@ -21,18 +22,25 @@ import (
 	"os"
 	"path"
 	"time"
-	"usermanager"
+	"connectionmanager"
+	"errors"
 )
 
-type user struct {
+const WEBROOT = "/home/beej/src/golang/longpoll/webroot"
+
+type response map[string] interface{}
+
+type User struct {
 	name string
+	id string
 	pubId string // public identifier
 }
+
 
 // Manages user structs
 type UserManager struct {
 	// Maps id to user
-	user           map[string]*user
+	user           map[string]*User
 
 	// Maps pubId to id
 	idMap          map[string]string
@@ -41,11 +49,35 @@ type UserManager struct {
 	nextGuestNumber int
 }
 
+
+// Construct a new UserManager
+func NewUserManager() *UserManager {
+	userManager := new(UserManager)
+	userManager.nextGuestNumber = 1
+	userManager.idMap = make(map[string]string)
+
+	return userManager
+}
+
+
+// Autogenerate a unique printable username
+func (um *UserManager) nextGuestName() string {
+	name := fmt.Sprintf("Guest%d", um.nextGuestNumber)
+	um.nextGuestNumber++
+
+	return name
+}
+
+
 // Add a new user
 //
 // Returns pointer to user
-func (um *UserManager) addUser(id string, name string) *user {
+func (um *UserManager) addUser(id string, name string) *User {
 	u, ok := um.user[id]
+
+	if name == "" {
+		name = um.nextGuestName()
+	}
 
 	if !ok {
 		u = new(User)
@@ -61,12 +93,14 @@ func (um *UserManager) addUser(id string, name string) *user {
 
 
 // Return a user by ID
-func (um *UserManager) getUserById(id string) *user, bool {
-	return um.user[id]
+func (um *UserManager) getUserById(id string) (*User, bool) {
+	u, ok := um.user[id]
+	return u, ok
 }
 
+
 // Return a user by PubID
-func (um *UserManager) getUserByPubId(pid string) *user, bool {
+func (um *UserManager) getUserByPubId(pid string) (*User, bool) {
 	id, ok := um.idMap[pid]
 
 	if !ok {
@@ -80,12 +114,12 @@ func (um *UserManager) getUserByPubId(pid string) *user, bool {
 		/*
 
 Old polling response code
-		messageIndex := make([]*Request, l)
+		messageIndex := make([]*Message, l)
 
 		// can't json.Marshal a List, so we put references in a slice:
 		count := 0
 		for e := u.messages.Front(); e != nil; e = e.Next() {
-			msg := e.Value.(*Request)
+			msg := e.Value.(*Message)
 			messageIndex[count] = msg
 			count++
 		}
@@ -99,53 +133,47 @@ Old polling response code
 		// ditch sent messages
 		u.messages.Init()
 
-		log.Printf("UserManager: pollCheck: sending to %s: %s\n", u.id, string(messages))
+		log.Printf("ConnectionManager: pollCheck: sending to %s: %s\n", u.id, string(messages))
 		u.pollChannel <- string(messages)
-		log.Printf("UserManager: pollCheck: sending to %s: complete\n", u.id)
+		log.Printf("ConnectionManager: pollCheck: sending to %s: complete\n", u.id)
 
 		// unmark users as polling
 		u.polling = false
 
 */
 
-const WEBROOT = "/home/beej/src/golang/longpoll/webroot"
-
-// Web file open error
-type WebFileOpenError struct {
-	msg string
-}
-
-// WebFileOpenError implementation
-func (w *WebFileOpenError) Error() string {
-	return w.msg
-}
 
 // Handler for user command requests (implements http.Handler)
 type CommandHandler struct {
-	userManager *usermanager.UserManager
+	userManager *UserManager
+	connectionManager *connectionmanager.ConnectionManager
 }
+
 
 // Handler for long-poll requests (implements http.Handler)
 type LongPollHandler struct {
-	userManager *usermanager.UserManager
+	userManager *UserManager
+	connectionManager *connectionmanager.ConnectionManager
 }
 
-// Helper function to get JSON strings
-func toJSONStr(data *usermanager.Request) []byte {
-	s, err := json.Marshal(data)
-	if err != nil {
-		panic(err)
+
+// Helper function to make a status response
+func makeStatusResponse(status string, message string) *response {
+	return &response{
+		"type": "status",
+		"status": status,
+		"message": message,
 	}
-
-	return s
 }
+
 
 // Service user command HTTP requests
 func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	rw.Header().Set("Content-Type", "application/json")
 
 	var userName string
-	var resp *usermanager.Request
+	var resp *connectionmanager.Message
+	var jresp []byte
 
 	// get passed parameters
 	id := rq.FormValue("id")
@@ -158,61 +186,88 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 		// extract username
 		userName = rq.FormValue("username")
 
-		// autogen anon names if unspecified?
-		if userName == "" {
-			userName = fmt.Sprintf("Guest%d", nextGuestNumber)
-			nextGuestNumber++
-		}
-
-		resp = h.userManager.SendRequest(&usermanager.Request{
-			"type": usermanager.LoginRequest,
-			"id":   id,
-			"userdata": map[string]string{
-				"username": userName,
-			},
+		resp = h.connectionManager.SendMessage(&connectionmanager.Message{
+			Type: connectionmanager.ConnectRequest,
+			Id:   id,
 		})
 
-		rw.Write(toJSONStr(resp))
+		// if ok, record in our user list
+		if resp.Err == nil {
+			user := h.userManager.addUser(id, userName)
+			jresp, _ = json.Marshal(response{
+				"type": "loginresponse",
+				"id": id,
+				"publicid": user.pubId,
+				"username": userName,
+			})
+		} else {
+			jresp, _ = json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
+		}
+
+		rw.Write(jresp)
 
 	case "broadcast":
 		// extract message
 		msg := rq.FormValue("message")
 
-		// from username
-		resp := h.userManager.SendRequest(&usermanager.Request{
-			"type": usermanager.GetAttrRequest,
-			"id":   id,
-			"attr": "username",
-		})
+		user, ok := h.userManager.getUserById(id)
 
-		// broadcast to all users
-		resp = h.userManager.SendRequest(&usermanager.Request{
-			"type": usermanager.BroadcastRequest,
-			"id":   id,
-			"userdata": map[string]string{
-				"username": (*resp)["value"].(string), // from get username, above
-				"msg":      msg,
-			},
-		})
+		if ok {
+			// send the broadcast request
+			h.connectionManager.SendMessage(&connectionmanager.Message{
+				Type: connectionmanager.BroadcastRequest,
+				Id:   id,
+				Payload: &connectionmanager.MessagePayload{
+					"type": "message",
+					"username": user.name,
+					"publicid": user.pubId,
+					"message": msg,
+				},
+			})
+			jresp, _ = json.Marshal(*makeStatusResponse("ok", ""))
 
-		rw.Write(toJSONStr(resp))
+		} else {
+			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
+		}
+
+		rw.Write(jresp)
 
 	case "setusername":
 		userName = rq.FormValue("username")
 
-		resp := h.userManager.SendRequest(&usermanager.Request{
-			"type":  usermanager.SetAttrRequest,
-			"id":    id,
-			"attr":  "username",
-			"value": userName,
-		})
+		user, ok := h.userManager.getUserById(id)
 
-		rw.Write(toJSONStr(resp))
+		if ok {
+			// broadcast that we're changing our username
+			h.connectionManager.SendMessage(&connectionmanager.Message{
+				Type: connectionmanager.BroadcastRequest,
+				Id:   id,
+				Payload: &connectionmanager.MessagePayload{
+					"type": "changeusername",
+					"oldusername": user.name,
+					"newusername": user.name,
+					"publicid": user.pubId,
+				},
+			})
+
+			// change username
+			user.name = userName
+
+			jresp, _ = json.Marshal(*makeStatusResponse("ok", ""))
+
+		} else {
+			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
+		}
+
+		rw.Write(jresp)
 	}
 }
 
+
 // Service long-poll HTTP requests
 func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
+	var jresp []byte
+
 	rw.Header().Set("Content-Type", "application/json")
 
 	// get ID
@@ -220,37 +275,52 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 
 	log.Printf("Chat: beginning long poll: %s\n", id)
 
-	// request messages from UserManager
-	resp := h.userManager.SendRequest(&usermanager.Request{
-		"type": usermanager.PollRequest,
-		"id":   id,
+	// request messages from ConnectionManager
+	resp := h.connectionManager.SendMessage(&connectionmanager.Message{
+		Type: connectionmanager.PollRequest,
+		Id:   id,
 	})
 
 	// check for errors
-	if (*resp)["status"] == "error" {
-		log.Printf("Chat: long poll request error: %s\n", (*resp)["message"])
-		fmt.Printf(`{"type":"error", "message":"%s"}`, (*resp)["message"])
+	if resp.Err != nil {
+		log.Printf("Chat: long poll request error: %s", resp.Err.Error())
+
+		jresp, _ := json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
+		rw.Write(jresp)
+
 		return
 	}
 
 	// wait for messages
-	userChan := (*resp)["userchan"].(chan string)
-	log.Printf("Chat: long poll waiting on channel: %s\n", userChan)
+	log.Printf("Chat: long poll waiting on channel: %s\n", resp.RChan)
 
-	msgJSON, ok := <-userChan
+	// response channel in resp
+	pollresp, ok := <- resp.PollChan
 
 	if ok {
+		messages := make([]*connectionmanager.MessagePayload, len(*pollresp))
+
+		for i, v := range(*pollresp) {
+			messages[i] = v.Payload
+		}
+
 		log.Printf("Chat: long poll response received: %s\n", id)
 
 		// send messages in response
-		fmt.Fprintf(rw, msgJSON)
+		jresp, _ = json.Marshal(messages)
 
 		log.Printf("Chat: completed long poll: %s\n", id)
 	} else {
 		log.Printf("Chat: long poll channel closed\n")
+
+		// the remote side has probably closed at this point, but let's
+		// send a response anyway
+		jresp, _ = json.Marshal(*makeStatusResponse("error", "long poll canceled"))
 	}
 
+	rw.Write(jresp)
 }
+
 
 // Try to open a file. Returns the file or nil.
 func getOpenFile(filePath string) (file *os.File, rerr error) {
@@ -263,7 +333,7 @@ func getOpenFile(filePath string) (file *os.File, rerr error) {
 	}
 
 	if fi.IsDir() {
-		return nil, &WebFileOpenError{"file is directory"}
+		return nil, errors.New("file is directory")
 	}
 
 	file, err = os.Open(filePath)
@@ -274,7 +344,8 @@ func getOpenFile(filePath string) (file *os.File, rerr error) {
 	return file, nil
 }
 
-// General file handler
+
+// General file server
 func fileHandler(rw http.ResponseWriter, r *http.Request) {
 	var file *os.File
 	var err error
@@ -331,12 +402,18 @@ func fileHandler(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+
 // Sets up the handlers and runs the HTTP server (run as a goroutine)
-func runServer(userManager *usermanager.UserManager) {
+func runWebServer(connectionManager *connectionmanager.ConnectionManager,
+	userManager *UserManager) {
+
 	longPollHandler := new(LongPollHandler)
 	commandHandler := new(CommandHandler)
 
+	longPollHandler.connectionManager = connectionManager
 	longPollHandler.userManager = userManager
+
+	commandHandler.connectionManager = connectionManager
 	commandHandler.userManager = userManager
 
 	s := &http.Server{
@@ -354,13 +431,16 @@ func runServer(userManager *usermanager.UserManager) {
 	log.Fatal(s.ListenAndServe())
 }
 
+
 // main
 func main() {
-	userManager := usermanager.New()
-	userManager.SetActive(true)
+	userManager := NewUserManager()
+	connectionManager := connectionmanager.New()
+	connectionManager.SetActive(true)
 
 	log.Println("Running server")
-	go runServer(userManager)
+
+	go runWebServer(connectionManager, userManager)
 
 	// console
 	fmt.Scanln()
