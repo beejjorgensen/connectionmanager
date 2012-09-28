@@ -1,0 +1,31 @@
+html {
+	font-family: sans-serif;
+}
+
+#output-div {
+	width: 500px;
+	height: 200px;
+	border: 1px solid black;
+	overflow: auto;
+}
+
+#output-div p {
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.chat-username {
+	color: blue;
+}
+
+.chat-sep {
+	color: blue;
+}
+
+.chat-message {
+}
+
+.system-message {
+	font-weight: bold;
+}
+
