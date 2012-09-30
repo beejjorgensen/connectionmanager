@@ -11,18 +11,12 @@ package main
 // hide private ID from snoopers
 
 import (
-	"bufio"
 	"code.google.com/p/go-uuid/uuid"
 	"connectionmanager"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"io"
 	"log"
-	"mime"
 	"net/http"
-	"os"
-	"path"
 	"time"
 	"runtime"
 )
@@ -129,6 +123,20 @@ func makeStatusResponse(status string, message string) *response {
 	}
 }
 
+// Helper function to log errors in response writes
+func writeReponse(rw http.ResponseWriter, data []byte) {
+	n, err := rw.Write(data)
+	if err != nil {
+		log.Printf("error writing command response: %v", err)
+		return
+	}
+
+	l := len(data)
+	if n != l {
+		log.Printf("command response short write: %d bytes (out of %d)", n, l)
+	}
+}
+
 // Service user command HTTP requests
 func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	rw.Header().Set("Content-Type", "application/json")
@@ -181,14 +189,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
 		}
 
-		n, err := rw.Write(jresp)
-		if err != nil {
-			log.Printf("error writing command response: %v", err)
-		}
-
-		if n != len(jresp) {
-			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
-		}
+		writeReponse(rw, jresp);
 
 	case "broadcast":
 		// extract message
@@ -214,14 +215,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		n, err := rw.Write(jresp)
-		if err != nil {
-			log.Printf("error writing command response: %v", err)
-		}
-
-		if n != len(jresp) {
-			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
-		}
+		writeReponse(rw, jresp);
 
 	case "setusername":
 		userName = rq.FormValue("username")
@@ -250,14 +244,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		n, err := rw.Write(jresp)
-		if err != nil {
-			log.Printf("error writing command response: %v", err)
-		}
-
-		if n != len(jresp) {
-			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
-		}
+		writeReponse(rw, jresp);
 	}
 }
 
@@ -283,14 +270,7 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 		log.Printf("Chat: long poll request error: %s", resp.Err.Error())
 
 		jresp, _ := json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
-		n, err := rw.Write(jresp)
-		if err != nil {
-			log.Printf("error writing command response: %v", err)
-		}
-
-		if n != len(jresp) {
-			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
-		}
+		writeReponse(rw, jresp);
 
 		return
 	}
@@ -323,93 +303,13 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	}
 
 	//log.Printf(">>>>> %s", string(jresp))
-	n, err := rw.Write(jresp)
-	if err != nil {
-		log.Printf("error writing command response: %v", err)
-	}
-
-	if n != len(jresp) {
-		log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
-	}
-}
-
-// Try to open a file. Returns the file or nil.
-func getOpenFile(filePath string) (file *os.File, rerr error) {
-	var fi os.FileInfo
-	var err error
-
-	fi, err = os.Stat(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	if fi.IsDir() {
-		return nil, errors.New("file is directory")
-	}
-
-	file, err = os.Open(filePath)
-	if err != nil {
-		return nil, err
-	}
-
-	return file, nil
+	writeReponse(rw, jresp);
 }
 
 // General file server
 func fileHandler(rw http.ResponseWriter, r *http.Request) {
-	var file *os.File
-	var err error
-	var usedFilePath *string
-
-	// Attempt to open the asked-for file, or index.html
 	filePath := fmt.Sprintf("%s%s", WEBROOT, r.URL.RequestURI())
-	usedFilePath = &filePath
-
-	file, err = getOpenFile(filePath)
-	if err != nil {
-		indexPath := fmt.Sprintf("%s%cindex.html", filePath, os.PathSeparator)
-		usedFilePath = &indexPath
-		file, err = getOpenFile(indexPath)
-		if err != nil {
-			log.Printf("error opening %s\n", filePath)
-			rw.WriteHeader(http.StatusNotFound)
-			io.WriteString(rw, "404 Not Found")
-			return
-		}
-	}
-
-	defer file.Close()
-
-	// Set the MIME type
-	mimeType := mime.TypeByExtension(path.Ext(*usedFilePath))
-
-	if mimeType == "" {
-		mimeType = "text/plain"
-	}
-
-	rw.Header().Set("Content-Type", mimeType)
-
-	//log.Printf("serving %s\n", filePath)
-
-	// Serve the file
-	reader := bufio.NewReader(file)
-	buf := make([]byte, 1024)
-
-	for {
-		n, err := reader.Read(buf)
-
-		if err != nil && err != io.EOF {
-			panic(err)
-		}
-		if n == 0 {
-			break
-		}
-
-		n2, err2 := rw.Write(buf[:n])
-		if err2 != nil || n2 != n {
-			panic("file write error")
-		}
-	}
+	http.ServeFile(rw, r, filePath)
 }
 
 // Sets up the handlers and runs the HTTP server (run as a goroutine)

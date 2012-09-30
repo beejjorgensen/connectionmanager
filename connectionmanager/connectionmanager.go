@@ -6,7 +6,7 @@ import (
 	"container/list"
 	"errors"
 	"fmt"
-	"log"
+	//"log"
 )
 
 // TODO: helper functions for SendMessage?
