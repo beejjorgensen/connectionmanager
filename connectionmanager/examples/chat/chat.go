@@ -3,12 +3,10 @@ package main
 
 // TODO:
 //
-// error handling on all the json.Marshal calls
+// add some kind of console thing?
 // get WEBROOT on command line or environment
 // handle users who leave
 // handle idle users
-// response JSON builder should dynamically build the JSON
-// hide private ID from snoopers
 
 import (
 	"code.google.com/p/go-uuid/uuid"
@@ -17,8 +15,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 	"runtime"
+	"time"
 )
 
 const WEBROOT = "/disks/beejhome/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/webroot"
@@ -189,7 +187,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
 		}
 
-		writeReponse(rw, jresp);
+		writeReponse(rw, jresp)
 
 	case "broadcast":
 		// extract message
@@ -215,7 +213,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		writeReponse(rw, jresp);
+		writeReponse(rw, jresp)
 
 	case "setusername":
 		userName = rq.FormValue("username")
@@ -244,7 +242,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		writeReponse(rw, jresp);
+		writeReponse(rw, jresp)
 	}
 }
 
@@ -270,7 +268,7 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 		log.Printf("Chat: long poll request error: %s", resp.Err.Error())
 
 		jresp, _ := json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
-		writeReponse(rw, jresp);
+		writeReponse(rw, jresp)
 
 		return
 	}
@@ -303,7 +301,7 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	}
 
 	//log.Printf(">>>>> %s", string(jresp))
-	writeReponse(rw, jresp);
+	writeReponse(rw, jresp)
 }
 
 // General file server
@@ -326,10 +324,10 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 	commandHandler.userManager = userManager
 
 	s := &http.Server{
-		Addr:        ":8080",
-		Handler:     nil,
-		ReadTimeout: 120 * time.Second,
-		WriteTimeout: 2 * time.Second,
+		Addr:           ":8080",
+		Handler:        nil,
+		ReadTimeout:    120 * time.Second,
+		WriteTimeout:   2 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 

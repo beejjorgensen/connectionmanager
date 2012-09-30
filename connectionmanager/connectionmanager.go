@@ -9,13 +9,11 @@ import (
 	//"log"
 )
 
+// TODO: throw away old messages if list gets large
 // TODO: helper functions for SendMessage?
 // TODO: allow user to turn polling off explicitly
-// TODO: allow sending arbitrary messages with no sender?
 // TODO: unicast message
 // TODO: multicast message (register multicast groups?)
-// TODO: rework main thread to use functions
-// TODO: have general storage for the Connection so we don't have setConnectionName, setAge, etc.
 
 // Message type identifiers
 type MessageType int32
@@ -321,7 +319,7 @@ func runConnectionManager(cm *ConnectionManager) {
 	for {
 		//log.Printf("ConnectionManager: waiting for message %v %v", cm, cm.messageChannel)
 
-		message = <- cm.messageChannel
+		message = <-cm.messageChannel
 
 		//log.Printf("ConnectionManager: got message: %s\n", message)
 

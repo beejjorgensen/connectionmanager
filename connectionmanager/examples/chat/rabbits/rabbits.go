@@ -2,16 +2,16 @@
 package main
 
 import (
+	"code.google.com/p/go-uuid/uuid"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"math/rand"
 	"net/http"
 	"net/url"
-	"encoding/json"
-	"io/ioutil"
-	"time"
-	"math/rand"
-	"code.google.com/p/go-uuid/uuid"
 	"runtime"
+	"time"
 )
 
 const msgurl = "http://127.0.0.1:8080/cmd"
@@ -26,7 +26,7 @@ func robotPoller(id string) {
 	var payload interface{}
 
 	transport := new(http.Transport)
-	client := &http.Client{Transport:transport}
+	client := &http.Client{Transport: transport}
 
 	for {
 		// send in a poll request and wait for response
@@ -95,7 +95,7 @@ func robot() {
 	var payload interface{}
 
 	transport := new(http.Transport)
-	client := &http.Client{Transport:transport}
+	client := &http.Client{Transport: transport}
 
 	id := uuid.New()
 
@@ -153,7 +153,7 @@ func robot() {
 		resp, err = client.PostForm(msgurl,
 			url.Values{
 				"command": {"broadcast"},
-				"id": {id},
+				"id":      {id},
 				"message": {fmt.Sprintf("message %d", msgCount)},
 			})
 
@@ -188,13 +188,13 @@ func robot() {
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	/*
-	connectionCount = 200
-	minDelay = 5000 // ms
-	maxDelay = 20000
+		connectionCount = 200
+		minDelay = 5000 // ms
+		maxDelay = 20000
 	*/
 	connectionCount = 200
 	minDelay = 500 // ms
-	maxDelay = 1500 
+	maxDelay = 1500
 
 	for i := 0; i < connectionCount; i++ {
 		go robot()
@@ -203,4 +203,3 @@ func main() {
 	fmt.Printf("Hit return to quit")
 	fmt.Scanln()
 }
-
