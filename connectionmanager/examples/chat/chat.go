@@ -24,9 +24,10 @@ import (
 	"os"
 	"path"
 	"time"
+	"runtime"
 )
 
-const WEBROOT = "/home/beej/src/golang/longpoll/webroot"
+const WEBROOT = "/disks/beejhome/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/webroot"
 
 type response map[string]interface{}
 
@@ -140,7 +141,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	id := rq.FormValue("id")
 	com := rq.FormValue("command")
 
-	log.Printf("Chat: serving command %s: %s\n", com, id)
+	//log.Printf("Chat: serving command %s: %s\n", com, id)
 
 	switch com {
 	case "login":
@@ -180,7 +181,14 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
 		}
 
-		rw.Write(jresp)
+		n, err := rw.Write(jresp)
+		if err != nil {
+			log.Printf("error writing command response: %v", err)
+		}
+
+		if n != len(jresp) {
+			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
+		}
 
 	case "broadcast":
 		// extract message
@@ -206,7 +214,14 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		rw.Write(jresp)
+		n, err := rw.Write(jresp)
+		if err != nil {
+			log.Printf("error writing command response: %v", err)
+		}
+
+		if n != len(jresp) {
+			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
+		}
 
 	case "setusername":
 		userName = rq.FormValue("username")
@@ -235,7 +250,14 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		rw.Write(jresp)
+		n, err := rw.Write(jresp)
+		if err != nil {
+			log.Printf("error writing command response: %v", err)
+		}
+
+		if n != len(jresp) {
+			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
+		}
 	}
 }
 
@@ -248,7 +270,7 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	// get ID
 	id := rq.FormValue("id")
 
-	log.Printf("Chat: beginning long poll: %s\n", id)
+	//log.Printf("Chat: beginning long poll: %s\n", id)
 
 	// request messages from ConnectionManager
 	resp := h.connectionManager.SendMessage(&connectionmanager.Message{
@@ -261,13 +283,20 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 		log.Printf("Chat: long poll request error: %s", resp.Err.Error())
 
 		jresp, _ := json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
-		rw.Write(jresp)
+		n, err := rw.Write(jresp)
+		if err != nil {
+			log.Printf("error writing command response: %v", err)
+		}
+
+		if n != len(jresp) {
+			log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
+		}
 
 		return
 	}
 
 	// wait for messages
-	log.Printf("Chat: long poll waiting on channel: %s\n", resp.RChan)
+	//log.Printf("Chat: long poll waiting on channel: %s\n", resp.RChan)
 
 	// response channel in resp
 	pollresp, ok := <-resp.PollChan
@@ -279,21 +308,29 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			messages[i] = v.Payload
 		}
 
-		log.Printf("Chat: long poll response received: %s\n", id)
+		//log.Printf("Chat: long poll response received: %s\n", id)
 
 		// send messages in response
 		jresp, _ = json.Marshal(messages)
 
-		log.Printf("Chat: completed long poll: %s\n", id)
+		//log.Printf("Chat: completed long poll: %s\n", id)
 	} else {
-		log.Printf("Chat: long poll channel closed\n")
+		//log.Printf("Chat: long poll channel closed\n")
 
 		// the remote side has probably closed at this point, but let's
 		// send a response anyway
 		jresp, _ = json.Marshal(*makeStatusResponse("error", "long poll canceled"))
 	}
 
-	rw.Write(jresp)
+	//log.Printf(">>>>> %s", string(jresp))
+	n, err := rw.Write(jresp)
+	if err != nil {
+		log.Printf("error writing command response: %v", err)
+	}
+
+	if n != len(jresp) {
+		log.Printf("command response short write: %d bytes (out of %d)", n, len(jresp))
+	}
 }
 
 // Try to open a file. Returns the file or nil.
@@ -352,7 +389,7 @@ func fileHandler(rw http.ResponseWriter, r *http.Request) {
 
 	rw.Header().Set("Content-Type", mimeType)
 
-	log.Printf("serving %s\n", filePath)
+	//log.Printf("serving %s\n", filePath)
 
 	// Serve the file
 	reader := bufio.NewReader(file)
@@ -391,8 +428,8 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 	s := &http.Server{
 		Addr:        ":8080",
 		Handler:     nil,
-		ReadTimeout: 10 * time.Second,
-		WriteTimeout:/*120*/ 5 * time.Second,
+		ReadTimeout: 120 * time.Second,
+		WriteTimeout: 2 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
@@ -405,6 +442,9 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 
 // main
 func main() {
+	log.Printf("num cpus: %v", runtime.NumCPU())
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	userManager := NewUserManager()
 	connectionManager := connectionmanager.New()
 	connectionManager.SetActive(true)

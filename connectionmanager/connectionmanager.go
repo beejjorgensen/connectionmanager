@@ -113,9 +113,9 @@ func (c *Connection) pollCheck() {
 		// ditch sent messages
 		c.messages.Init()
 
-		log.Printf("ConnectionManager: pollCheck: sending to %s: %v\n", c.id, c.messages)
+		//log.Printf("ConnectionManager: pollCheck: sending to %s: %v\n", c.id, c.messages)
 		c.pollChannel <- &messageArray
-		log.Printf("ConnectionManager: pollCheck: sending to %s: complete\n", c.id)
+		//log.Printf("ConnectionManager: pollCheck: sending to %s: complete\n", c.id)
 
 		// unmark connections as polling
 		c.polling = false
@@ -190,11 +190,11 @@ func (cm *ConnectionManager) buildConnectionListResponse() []map[string]interfac
 func (cm *ConnectionManager) SendMessage(r *Message) *Message {
 	r.RChan = make(chan *Message)
 
-	log.Printf("SendMessage: sending %s\n", *r)
+	//log.Printf("SendMessage: sending %s\n", *r)
 	cm.messageChannel <- r
-	log.Printf("SendMessage: receiving\n")
+	//log.Printf("SendMessage: receiving\n")
 	resp := <-r.RChan
-	log.Printf("SendMessage: received %s\n", *resp)
+	//log.Printf("SendMessage: received %s\n", *resp)
 
 	close(r.RChan) // necessary?
 	r.RChan = nil
@@ -222,32 +222,32 @@ func (cm *ConnectionManager) handleConnectRequest(m *Message) {
 	if c, present = cm.connection[m.Id]; !present {
 		c = newConnection(m.Id)
 
-		log.Printf("ConnectionManager: %s: new connection\n", m.Id)
+		//log.Printf("ConnectionManager: %s: new connection\n", m.Id)
 	}
 
 	// add to the list
 	cm.connection[m.Id] = c
 
 	// send response
-	log.Println("ConnectionManager: sending login response")
+	//log.Println("ConnectionManager: sending login response")
 	m.RChan <- &Message{
 		Type: ConnectResponse,
 		Id:   m.Id,
 		Err:  nil,
 	}
-	log.Println("ConnectionManager: sent login response")
+	//log.Println("ConnectionManager: sent login response")
 }
 
 // Handle a StopRequest Message
 func (cm *ConnectionManager) handleStopRequest(m *Message) {
-	log.Println("ConnectionManager: sending stop response")
+	//log.Println("ConnectionManager: sending stop response")
 
 	m.RChan <- &Message{
 		Type: StopResponse,
 		Err:  nil,
 	}
 
-	log.Println("ConnectionManager: sent stop response")
+	//log.Println("ConnectionManager: sent stop response")
 }
 
 // Handle a PollRequest Message
@@ -257,7 +257,7 @@ func (cm *ConnectionManager) handlePollRequest(m *Message) {
 	c, ok := cm.connection[m.Id]
 
 	if !ok {
-		log.Printf("ConnectionManager: unknown user ID for PollMessage: %s\n", m.Id)
+		//log.Printf("ConnectionManager: unknown user ID for PollMessage: %s\n", m.Id)
 
 		m.RChan <- &Message{
 			Type: PollResponse,
@@ -278,7 +278,7 @@ func (cm *ConnectionManager) handlePollRequest(m *Message) {
 	c.polling = true
 	c.pollChannel = make(chan *[]*Message)
 
-	log.Println("ConnectionManager: sending pollmessage response")
+	//log.Println("ConnectionManager: sending pollmessage response")
 
 	m.RChan <- &Message{
 		Type:     PollResponse,
@@ -286,7 +286,7 @@ func (cm *ConnectionManager) handlePollRequest(m *Message) {
 		Err:      nil,
 	}
 
-	log.Println("ConnectionManager: sent pollmessage response")
+	//log.Println("ConnectionManager: sent pollmessage response")
 
 	// push if we already have something
 	c.pollCheck()
@@ -304,24 +304,26 @@ func (cm *ConnectionManager) handleBroadcastRequest(m *Message) {
 	// buffer messages and push to waiting connections
 	cm.broadcast(m)
 
-	log.Println("ConnectionManager: sending broadcast response")
+	//log.Println("ConnectionManager: sending broadcast response")
 
 	m.RChan <- &Message{
 		Type: BroadcastResponse,
 		Err:  nil,
 	}
 
-	log.Println("ConnectionManager: sent broadcast response")
+	//log.Println("ConnectionManager: sent broadcast response")
 }
 
 // Manages connections (runs as a goroutine)
 func runConnectionManager(cm *ConnectionManager) {
+	var message *Message
+
 	for {
-		log.Println("ConnectionManager: waiting for message")
+		//log.Printf("ConnectionManager: waiting for message %v %v", cm, cm.messageChannel)
 
-		message := <-cm.messageChannel
+		message = <- cm.messageChannel
 
-		log.Printf("ConnectionManager: got message: %s\n", message)
+		//log.Printf("ConnectionManager: got message: %s\n", message)
 
 		switch message.Type {
 
@@ -342,6 +344,6 @@ func runConnectionManager(cm *ConnectionManager) {
 			panic(fmt.Sprintf("Unknown message: \"%d\"", message.Type))
 		}
 
-		log.Println("ConnectionManager: finished servicing message")
+		//log.Println("ConnectionManager: finished servicing message")
 	}
 }
