@@ -1,0 +1,2517 @@
+2012/09/29 23:04:40 num cpus: 4
+2012/09/29 23:04:40 Running server
+2012/09/29 23:04:41 Chat: long poll request error: PollRequest: unknown user id: e856591c-b241-d140-3395-1efbeb931ace
+panic: invalid memory address or nil pointer dereference
+throw: panic during gc
+[signal 0xb code=0x1 addr=0x1 pc=0x40a8e8]
+
+goroutine 63 [running]:
+----- stack segment boundary -----
+reflect.mapaccess(0x5201f8, 0xf8401b1e80, 0xf8401c2540, 0x0, 0x6c66657200000000, ...)
+	/usr/lib/go/src/pkg/runtime/hashmap.c:897 +0x9a
+reflect.Value.MapIndex(0x520208, 0xf8401a5b80, 0x156, 0x51fb70, 0xf8401c2540, ...)
+	/usr/lib/go/src/pkg/reflect/value.go:952 +0x14e
+encoding/json.(*encodeState).reflectValueQuoted(0xf84035d8c0, 0x520208, 0xf8401a5b80, 0x156, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:361 +0xde3
+encoding/json.(*encodeState).reflectValue(0xf84035d8c0, 0x520208, 0xf8401a5b80, 0x156)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf84035d8c0, 0x517508, 0xf8402dfaf8, 0x166, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:408 +0xaa0
+encoding/json.(*encodeState).reflectValue(0xf84035d8c0, 0x517508, 0xf8402dfaf8, 0x166)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf84035d8c0, 0x51ad90, 0xf84035ed20, 0x172, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:399 +0x9e1
+encoding/json.(*encodeState).reflectValue(0xf84035d8c0, 0x51ad90, 0xf84035ed20, 0x172)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).marshal(0xf84035d8c0, 0x51ad80, 0xf84035ed20, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:213 +0x8d
+encoding/json.Marshal(0x51ad80, 0xf84035ed20, 0x4b0000004b, 0x51ad80, 0xf84035ed20, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:107 +0x5e
+main.(*LongPollHandler).ServeHTTP(0xf840062810, 0xf8400d10c0, 0xf8401b9cc0, 0xf84023d180, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:294 +0x557
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf8401b9cc0, 0xf84023d180, 0xf8401b9cc0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf8401431e0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 1 [syscall]:
+syscall.Syscall()
+	/usr/lib/go/src/pkg/syscall/asm_linux_amd64.s:15 +0x5
+syscall.Read(0xf800000000, 0xf84005ecf8, 0x400000001, 0x41004004, 0x0, ...)
+	/usr/lib/go/src/pkg/syscall/zerrors_linux_amd64.go:2262 +0x78
+os.(*File).read(0xf840074000, 0xf84005ecf8, 0x400000001, 0x4170b7, 0x0, ...)
+	/usr/lib/go/src/pkg/os/file_unix.go:174 +0x58
+os.(*File).Read(0xf840074000, 0xf84005ecf8, 0x400000001, 0x1, 0x0, ...)
+	/usr/lib/go/src/pkg/os/file.go:95 +0x83
+fmt.(*readRune).readByte(0xf84005ece0, 0x4170b7, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/fmt/scan.go:340 +0x141
+fmt.(*readRune).ReadRune(0xf84005ece0, 0x0, 0x0, 0x0, 0x21a00000001, ...)
+	/usr/lib/go/src/pkg/fmt/scan.go:353 +0x41
+fmt.(*ss).ReadRune(0xf84005d300, 0x0, 0x0, 0x0, 0xf84005ccf0, ...)
+	/usr/lib/go/src/pkg/fmt/scan.go:200 +0xda
+fmt.(*ss).getRune(0xf84005d300, 0x42deb6, 0x5a4d08, 0x57e630)
+	/usr/lib/go/src/pkg/fmt/scan.go:220 +0x27
+fmt.(*ss).doScan(0xf84005d300, 0x0, 0x0, 0xf800000000, 0x0, ...)
+	/usr/lib/go/src/pkg/fmt/scan.go:1052 +0xed
+fmt.Fscanln(0xf84005f330, 0xf840074000, 0x0, 0x0, 0xf840074000, ...)
+	/usr/lib/go/src/pkg/fmt/scan.go:134 +0x93
+fmt.Scanln(0x0, 0x0, 0x6e6e75520000000e, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/fmt/scan.go:77 +0x7b
+main.main()
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:357 +0x176
+
+goroutine 2 [syscall]:
+created by runtime.main
+	/usr/lib/go/src/pkg/runtime/proc.c:221
+
+goroutine 3 [runnable]:
+connectionmanager.runConnectionManager(0xf84005eca0, 0x0)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/connectionmanager.go:324 +0x35
+created by connectionmanager.(*ConnectionManager).SetActive
+	/home/beej/src/go/connectionmanager/src/connectionmanager/connectionmanager.go:146 +0x41
+
+goroutine 4 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400bc000, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).accept(0xf8400bc000, 0x47d11c, 0x0, 0xf84005f000, 0xf840074040, ...)
+	/usr/lib/go/src/pkg/net/fd.go:622 +0x20d
+net.(*TCPListener).AcceptTCP(0xf840074358, 0xf8402f1bb0, 0x0, 0x0, 0x8, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:320 +0x71
+net.(*TCPListener).Accept(0xf840074358, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:330 +0x49
+net/http.(*Server).Serve(0xf84005da40, 0xf84005db40, 0xf840074358, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:1029 +0x88
+net/http.(*Server).ListenAndServe(0xf84005da40, 0x2f00000001, 0x4032d8, 0xf840062820)
+	/usr/lib/go/src/pkg/net/http/server.go:1019 +0xb6
+main.runWebServer(0xf84005eca0, 0xf84005ec40, 0x0, 0x0)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:340 +0x176
+created by main.main
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:354 +0x164
+
+goroutine 5 [runnable]:
+syscall.Syscall6()
+	/usr/lib/go/src/pkg/syscall/asm_linux_amd64.s:61 +0x6a
+syscall.EpollWait(0xf800000006, 0xf8400bb010, 0xa0000000a, 0x1cfe0, 0xc, ...)
+	/usr/lib/go/src/pkg/syscall/zerrors_linux_amd64.go:1846 +0xa1
+net.(*pollster).WaitFD(0xf8400bb000, 0xf84005dac0, 0x1ba62a2990, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/fd_linux.go:146 +0x110
+net.(*pollServer).Run(0xf84005dac0, 0x0)
+	/usr/lib/go/src/pkg/net/fd.go:236 +0xe4
+created by net.newPollServer
+	/usr/lib/go/src/pkg/net/newpollserver.go:35 +0x382
+
+goroutine 6 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400bc090, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400bc090, 0xf8400c0000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400743b0, 0xf8400c0000, 0x100000001000, 0xf8400be840, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8100, 0xf8400c0000, 0x100000001000, 0xde800000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005dc40, 0xde800000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005dc40, 0x7f19bf18e20a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005dc40, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8400b86c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8400b86c0, 0xf8400cd0c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005dc40, 0xf8400cd0c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840086ea0, 0xf8400d10c0, 0x0, 0x0, 0xf8400d1080, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840086ea0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 7 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce360, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce360, 0xf8400db000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400744e0, 0xf8400db000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8720, 0xf8400db000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1200, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1200, 0x7f19bf19180a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1200, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b0360, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b0360, 0xf8400dd600, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1200, 0xf8400dd600, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d32a0, 0xf8400d10c0, 0x0, 0x0, 0xf840191780, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d32a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 8 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400bc120, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400bc120, 0xf8400de000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074628, 0xf8400de000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8180, 0xf8400de000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005dd40, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005dd40, 0x7f19bf19250a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005dd40, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b0d80, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b0d80, 0xf8400cde40, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005dd40, 0xf8400cde40, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840086f60, 0xf8400d10c0, 0x0, 0x0, 0xf840113680, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840086f60, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 9 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce3f0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce3f0, 0xf8400e0000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074558, 0xf8400e0000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b87a0, 0xf8400e0000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1300, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1300, 0x7f19bf02ec0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1300, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84005e260, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84005e260, 0xf84016e480, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1300, 0xf84016e480, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d33c0, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9ac0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d33c0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 10 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce480, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce480, 0xf8400e3000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400745c8, 0xf8400e3000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8800, 0xf8400e3000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1400, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1400, 0x7f19bf19250a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1400, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401e6540, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401e6540, 0xf8400cdd80, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1400, 0xf8400cdd80, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d34e0, 0xf8400d10c0, 0x0, 0x0, 0xf840113780, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d34e0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 11 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce510, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce510, 0xf8400e5000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074738, 0xf8400e5000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8860, 0xf8400e5000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1500, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1500, 0x7f19bf19210a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1500, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b0600, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b0600, 0xf84016c240, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1500, 0xf84016c240, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3600, 0xf8400d10c0, 0x0, 0x0, 0xf840191a00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3600, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 12 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce5a0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce5a0, 0xf8400e7000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400747a8, 0xf8400e7000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b88c0, 0xf8400e7000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1600, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1600, 0x7f19bf191e0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1600, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b1980, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b1980, 0xf8401c1240, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1600, 0xf8401c1240, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3720, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9900, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3720, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 13 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce630, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce630, 0xf8400f5000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074818, 0xf8400f5000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8920, 0xf8400f5000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1700, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1700, 0x7f19bf18f00a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1700, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84010c420, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84010c420, 0xf8401c1180, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1700, 0xf8401c1180, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3840, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9880, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3840, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 14 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce6c0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce6c0, 0xf8400f9000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074888, 0xf8400f9000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8980, 0xf8400f9000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1800, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1800, 0x7f19bf19250a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1800, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b1f40, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b1f40, 0xf8400cdf00, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1800, 0xf8400cdf00, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3960, 0xf8400d10c0, 0x0, 0x0, 0xf840113600, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3960, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 15 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce750, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce750, 0xf8400fd000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400748f8, 0xf8400fd000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b89e0, 0xf8400fd000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1900, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1900, 0x7f19bf192d0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1900, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401e6080, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401e6080, 0xf84016e180, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1900, 0xf84016e180, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3a80, 0xf8400d10c0, 0x0, 0x0, 0xf840113700, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3a80, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 16 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce7e0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce7e0, 0xf8400ff000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074968, 0xf8400ff000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8a40, 0xf8400ff000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1a00, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1a00, 0x7f19bf191e0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1a00, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840197240, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840197240, 0xf8400f4900, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1a00, 0xf8400f4900, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3ba0, 0xf8400d10c0, 0x0, 0x0, 0xf840191940, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3ba0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 17 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce870, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce870, 0xf840101000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400749d8, 0xf840101000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8aa0, 0xf840101000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1b00, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1b00, 0x7f19bf19240a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1b00, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840197260, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840197260, 0xf8400f4840, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1b00, 0xf8400f4840, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3cc0, 0xf8400d10c0, 0x0, 0x0, 0xf8400d1c40, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3cc0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 18 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400bc480, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400bc480, 0xf840115000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400746c0, 0xf840115000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b83a0, 0xf840115000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005df00, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005df00, 0x7f19bf192a0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005df00, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b17c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b17c0, 0xf84016e0c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005df00, 0xf84016e0c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401112a0, 0xf8400d10c0, 0x0, 0x0, 0xf8400d1fc0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401112a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 19 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840095f30, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840095f30, 0xf840099000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8400742b0, 0xf840099000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8400b8040, 0xf840099000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005d940, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005d940, 0x7f19bf19210a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005d940, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401e6840, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401e6840, 0xf84016c300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005d940, 0xf84016c300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840086ae0, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9a40, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840086ae0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 20 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400bcbd0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400bcbd0, 0xf84015a000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074a58, 0xf84015a000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014b0e0, 0xf84015a000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401139c0, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401139c0, 0x7f19bf192d0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401139c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401e61c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401e61c0, 0xf84016e300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401139c0, 0xf84016e300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840111480, 0xf8400d10c0, 0x0, 0x0, 0xf840113a80, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840111480, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 21 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840134a20, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840134a20, 0xf84016d000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401540b8, 0xf84016d000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014b6c0, 0xf84016d000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401382c0, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401382c0, 0x7f19bf192a0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401382c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b1bc0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b1bc0, 0xf8401c1300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401382c0, 0xf8401c1300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84014c960, 0xf8400d10c0, 0x0, 0x0, 0xf8400d1bc0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84014c960, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 22 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840134d80, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840134d80, 0xf840183000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840154750, 0xf840183000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84015b880, 0xf840183000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840138480, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840138480, 0x7f19bf193a0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840138480, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401e6bc0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401e6bc0, 0xf8401ea0c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840138480, 0xf8401ea0c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840182060, 0xf8400d10c0, 0x0, 0x0, 0xf8401d9c80, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840182060, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 23 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840134e10, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840134e10, 0xf840187000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401547c0, 0xf840187000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84015b8e0, 0xf840187000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840138580, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840138580, 0x7f19bf19400a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840138580, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84014bec0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84014bec0, 0xf84018e240, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840138580, 0xf84018e240, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840182180, 0xf8400d10c0, 0x0, 0x0, 0xf840144840, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840182180, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 24 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ceea0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ceea0, 0xf840189000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840154278, 0xf840189000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014bf80, 0xf840189000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005d5c0, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005d5c0, 0x7f19bf052c0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005d5c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b1040, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b1040, 0xf84018e000, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005d5c0, 0xf84018e000, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840086f00, 0xf8400d10c0, 0x0, 0x0, 0xf840191f80, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840086f00, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 25 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840150120, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840150120, 0xf84019a000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401546c0, 0xf84019a000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014b9c0, 0xf84019a000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191080, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191080, 0x7f19bf193f0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191080, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b660, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b660, 0xf840192600, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191080, 0xf840192600, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84014cea0, 0xf8400d10c0, 0x0, 0x0, 0xf8401449c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84014cea0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 26 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401501b0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401501b0, 0xf84019d000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840154d30, 0xf84019d000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014ba20, 0xf84019d000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191180, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191180, 0x7f19bc1bdc0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191180, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b0a80, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b0a80, 0xf8400f4180, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191180, 0xf8400f4180, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84019c000, 0xf8400d10c0, 0x0, 0x0, 0xf84020aa80, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84019c000, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 27 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840150240, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840150240, 0xf8401a0000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840154da0, 0xf8401a0000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014ba80, 0xf8401a0000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191280, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191280, 0x7f19bf19100a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191280, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840197640, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840197640, 0xf840159c00, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191280, 0xf840159c00, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84019c120, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9680, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84019c120, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 28 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401502d0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401502d0, 0xf8401a7000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5110, 0xf8401a7000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014bae0, 0xf8401a7000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191380, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191380, 0x7f19bf193a0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191380, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b14e0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b14e0, 0xf840192840, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191380, 0xf840192840, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84019c240, 0xf8400d10c0, 0x0, 0x0, 0xf84020a780, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84019c240, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 29 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840150360, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840150360, 0xf8401a9000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5180, 0xf8401a9000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014bb40, 0xf8401a9000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191480, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191480, 0x7f19bf193f0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191480, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b1dc0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b1dc0, 0xf840159a80, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191480, 0xf840159a80, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84019c360, 0xf8400d10c0, 0x0, 0x0, 0xf84020a700, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84019c360, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 30 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401503f0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401503f0, 0xf8401ac000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a51f0, 0xf8401ac000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014bba0, 0xf8401ac000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191580, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191580, 0x7f19bc1c1c0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191580, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84014b8a0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84014b8a0, 0xf84018e0c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191580, 0xf84018e0c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84019c480, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9540, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84019c480, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 31 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840150480, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840150480, 0xf8401af000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5360, 0xf8401af000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840197c00, 0xf8401af000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191680, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191680, 0x7f19bf193f0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191680, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b1a40, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b1a40, 0xf840192780, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191680, 0xf840192780, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84019c5a0, 0xf8400d10c0, 0x0, 0x0, 0xf8401d9c00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84019c5a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 32 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401b6090, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401b6090, 0xf8401bf000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5458, 0xf8401bf000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84014bfa0, 0xf8401bf000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005d640, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005d640, 0x7f19bf19400a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005d640, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84014bc60, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84014bc60, 0xf84018e180, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005d640, 0xf84018e180, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401b8c00, 0xf8400d10c0, 0x0, 0x0, 0xf8401b94c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401b8c00, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 33 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400a05a0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400a05a0, 0xf8401c5000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074488, 0xf8401c5000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840197de0, 0xf8401c5000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401917c0, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401917c0, 0x7f19bf194a0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401917c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8400b8b80, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8400b8b80, 0xf84018e300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401917c0, 0xf84018e300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84019c960, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9fc0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84019c960, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 34 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401b25a0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401b25a0, 0xf8401cf000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5b48, 0xf8401cf000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401b0540, 0xf8401cf000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401b9940, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401b9940, 0x7f19bf194b0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401b9940, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84010c7c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84010c7c0, 0xf84025b0c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401b9940, 0xf84025b0c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401c7240, 0xf8400d10c0, 0x0, 0x0, 0xf840266040, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401c7240, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 35 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401491b0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401491b0, 0xf8401da000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5d98, 0xf8401da000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840197360, 0xf8401da000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9040, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9040, 0x7f19bf19580a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9040, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b140, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b140, 0xf8401ea600, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9040, 0xf8401ea600, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840182f00, 0xf8400d10c0, 0x0, 0x0, 0xf84020a540, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840182f00, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 36 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840149240, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840149240, 0xf8401ee000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1308, 0xf8401ee000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401973c0, 0xf8401ee000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9140, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9140, 0x7f19bf19530a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9140, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209f00, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209f00, 0xf84025b300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9140, 0xf84025b300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401e4c60, 0xf8400d10c0, 0x0, 0x0, 0xf840266140, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401e4c60, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 37 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401492d0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401492d0, 0xf8401f1000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1378, 0xf8401f1000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6c20, 0xf8401f1000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9240, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9240, 0x7f19bf19480a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9240, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84010cc60, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84010cc60, 0xf84023d300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9240, 0xf84023d300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401e4d80, 0xf8400d10c0, 0x0, 0x0, 0xf8402660c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401e4d80, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 38 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840149360, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840149360, 0xf8401f6000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e13e8, 0xf8401f6000, 0x100000001000, 0xf8401c7660, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6c80, 0xf8401f6000, 0x100000001000, 0xf2600000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9340, 0xf2600000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9340, 0x7f19beff0c0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9340, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401b0340, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401b0340, 0xf840192900, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9340, 0xf840192900, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401e4ea0, 0xf8400d10c0, 0x0, 0x0, 0xf840138f00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401e4ea0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 39 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401493f0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401493f0, 0xf8401f9000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1458, 0xf8401f9000, 0x100000001000, 0xf8401e44e0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6ce0, 0xf8401f9000, 0x100000001000, 0xf2600000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9440, 0xf2600000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9440, 0x7f19beff1c0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9440, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8400b81c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8400b81c0, 0xf84025b000, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9440, 0xf84025b000, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401f8000, 0xf8400d10c0, 0x0, 0x0, 0xf8401d9b80, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401f8000, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 40 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840149480, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840149480, 0xf8401fb000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e14c8, 0xf8401fb000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6d40, 0xf8401fb000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9540, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9540, 0x7f19bf193f0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9540, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b960, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b960, 0xf840192300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9540, 0xf840192300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401f8120, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9440, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401f8120, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 41 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840149510, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840149510, 0xf8401fd000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1538, 0xf8401fd000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6da0, 0xf8401fd000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9640, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9640, 0x7f19bf19400a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9640, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402095e0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402095e0, 0xf8401596c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9640, 0xf8401596c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401f8240, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9d40, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401f8240, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 42 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401495a0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401495a0, 0xf8401ff000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e15a8, 0xf8401ff000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6e00, 0xf8401ff000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9740, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9740, 0x7f19bf19530a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9740, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b720, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b720, 0xf8401923c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9740, 0xf8401923c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401f8360, 0xf8400d10c0, 0x0, 0x0, 0xf840144f00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401f8360, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 43 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840149630, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840149630, 0xf840201000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1618, 0xf840201000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6e60, 0xf840201000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9840, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9840, 0x7f19bf19520a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9840, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840294140, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840294140, 0xf84023d3c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9840, 0xf84023d3c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401f8480, 0xf8400d10c0, 0x0, 0x0, 0xf8402661c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401f8480, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 44 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401496c0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401496c0, 0xf840204000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1688, 0xf840204000, 0x100000001000, 0xf8400be840, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6ec0, 0xf840204000, 0x100000001000, 0xf3300000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9940, 0xf3300000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9940, 0x7f19bf19680a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9940, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402b54e0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402b54e0, 0xf84025b3c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9940, 0xf84025b3c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401f85a0, 0xf8400d10c0, 0x0, 0x0, 0xf84020a3c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401f85a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 45 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840149750, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840149750, 0xf840206000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e16f8, 0xf840206000, 0x100000001000, 0xf840143ba0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6f20, 0xf840206000, 0x100000001000, 0xf2600000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9a40, 0xf2600000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9a40, 0x7f19bf194a0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9a40, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b340, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b340, 0xf8401ea300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9a40, 0xf8401ea300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401f86c0, 0xf8400d10c0, 0x0, 0x0, 0xf840144cc0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401f86c0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 46 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400a0bd0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400a0bd0, 0xf84020b000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5af0, 0xf84020b000, 0x100000001000, 0x400000002c, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209060, 0xf84020b000, 0x100000001000, 0xf1000000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84020a040, 0xf1000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84020a040, 0x7f19bf19580a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84020a040, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402945c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402945c0, 0xf840293300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84020a040, 0xf840293300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401d5480, 0xf8400d10c0, 0x0, 0x0, 0xf840144700, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401d5480, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 47 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400a0c60, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400a0c60, 0xf84020e000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1960, 0xf84020e000, 0x100000001000, 0xf8402b62a0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402090c0, 0xf84020e000, 0x100000001000, 0xf2600000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84020a140, 0xf2600000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84020a140, 0x7f19bf19570a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84020a140, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209820, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209820, 0xf840159540, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84020a140, 0xf840159540, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401d55a0, 0xf8400d10c0, 0x0, 0x0, 0xf8401b93c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401d55a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 48 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401df240, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401df240, 0xf840211000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1160, 0xf840211000, 0x100000001000, 0xf8400be840, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6100, 0xf840211000, 0x100000001000, 0xf3300000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8400d1f40, 0xf3300000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8400d1f40, 0x7f19bf19650a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8400d1f40, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402b5b00, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402b5b00, 0xf8401eac00, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8400d1f40, 0xf8401eac00, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401d5ea0, 0xf8400d10c0, 0x0, 0x0, 0xf8402a6500, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401d5ea0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 49 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401df360, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401df360, 0xf840215000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1a30, 0xf840215000, 0x100000001000, 0xf8400be840, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401e6220, 0xf840215000, 0x100000001000, 0xf3300000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84020a840, 0xf3300000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84020a840, 0x7f19bf19650a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84020a840, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402b5ae0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402b5ae0, 0xf8401eab40, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84020a840, 0xf8401eab40, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214000, 0xf8400d10c0, 0x0, 0x0, 0xf8402a6480, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214000, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 50 [semacquire]:
+----- stack segment boundary -----
+reflect.mapaccess(0x5201f8, 0xf840209200, 0xf84027a040, 0x0, 0x6c66657200000000, ...)
+	/usr/lib/go/src/pkg/runtime/hashmap.c:897 +0x9a
+reflect.Value.MapIndex(0x520208, 0xf8401a5548, 0x156, 0x51fb70, 0xf84027a040, ...)
+	/usr/lib/go/src/pkg/reflect/value.go:952 +0x14e
+encoding/json.(*encodeState).reflectValueQuoted(0xf8402d3820, 0x520208, 0xf8401a5548, 0x156, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:361 +0xde3
+encoding/json.(*encodeState).reflectValue(0xf8402d3820, 0x520208, 0xf8401a5548, 0x156)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf8402d3820, 0x517508, 0xf8402be988, 0x166, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:408 +0xaa0
+encoding/json.(*encodeState).reflectValue(0xf8402d3820, 0x517508, 0xf8402be988, 0x166)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf8402d3820, 0x51ad90, 0xf8402f1bc0, 0x172, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:399 +0x9e1
+encoding/json.(*encodeState).reflectValue(0xf8402d3820, 0x51ad90, 0xf8402f1bc0, 0x172)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).marshal(0xf8402d3820, 0x51ad80, 0xf8402f1bc0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:213 +0x8d
+encoding/json.Marshal(0x51ad80, 0xf8402f1bc0, 0x4b0000004b, 0x51ad80, 0xf8402f1bc0, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:107 +0x5e
+main.(*LongPollHandler).ServeHTTP(0xf840062810, 0xf8400d10c0, 0xf8402a6840, 0xf840159f00, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:294 +0x557
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf8402a6840, 0xf840159f00, 0xf8402a6840, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf840214120, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 51 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce120, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce120, 0xf84015c000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074fd8, 0xf84015c000, 0x100000001000, 0xf8402b6420, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840197860, 0xf84015c000, 0x100000001000, 0xf2600000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005d2c0, 0xf2600000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005d2c0, 0x7f19bf19680a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005d2c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402b51c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402b51c0, 0xf8401ea9c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005d2c0, 0xf8401ea9c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3120, 0xf8400d10c0, 0x0, 0x0, 0xf840144780, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3120, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 52 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce1b0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce1b0, 0xf840213000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074eb0, 0xf840213000, 0x100000001000, 0xf8400be840, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840197900, 0xf840213000, 0x100000001000, 0xf3300000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005d8c0, 0xf3300000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005d8c0, 0x7f19bf19570a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005d8c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84034f080, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84034f080, 0xf8401593c0, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005d8c0, 0xf8401593c0, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3d80, 0xf8400d10c0, 0x0, 0x0, 0xf8401b9280, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3d80, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 53 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400ce240, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400ce240, 0xf840208000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074f30, 0xf840208000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401979a0, 0xf840208000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84005dfc0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84005dfc0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84005dfc0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840197100, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840197100, 0xf840159cc0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84005dfc0, 0xf840159cc0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8400d3ea0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8400d3ea0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 54 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400bc900, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400bc900, 0xf840145000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074828, 0xf840145000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84005e380, 0xf840145000, 0x100000001000, 0x40a3c2, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840144000, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840144000, 0x7f19bc1c5c0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840144000, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8401e69c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8401e69c0, 0xf8401ea000, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840144000, 0xf8401ea000, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401b8480, 0xf840086e40, 0x0, 0x0, 0x7f19bc1c5f00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401b8480, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 55 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400bc990, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400bc990, 0xf84013d000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840074878, 0xf84013d000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8401b0400, 0xf84013d000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84020a9c0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84020a9c0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84020a9c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840197660, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840197660, 0xf840159b40, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84020a9c0, 0xf840159b40, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840182720, 0xf840086e40, 0x0, 0x0, 0x7f19bc1dff00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840182720, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 56 [semacquire]:
+reflect.unsafe_New(0xf840079000, 0x51fb70, 0x51fb70, 0xf840079000, 0x51fb70, ...)
+	/usr/lib/go/src/pkg/runtime/iface.c:682 +0x6d
+reflect.valueInterface(0x51fb70, 0xf8400fbff0, 0x182, 0x1800000001, 0x3b00000000, ...)
+	/usr/lib/go/src/pkg/reflect/value.go:856 +0x20e
+reflect.Value.Interface(0x51fb70, 0xf8400fbff0, 0x182, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/reflect/value.go:816 +0x42
+encoding/json.(*encodeState).reflectValueQuoted(0xf84014e6e0, 0x51fb70, 0xf8400fbff0, 0x182, 0x1400000000, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:253 +0xa1
+encoding/json.(*encodeState).reflectValue(0xf84014e6e0, 0x51fb70, 0xf8400fbff0, 0x182)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf84014e6e0, 0x51c5d0, 0xf84034cdf0, 0x142, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:408 +0xaa0
+----- stack segment boundary -----
+encoding/json.(*encodeState).reflectValue(0xf84014e6e0, 0x51c5d0, 0xf84034cdf0, 0x142)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf84014e6e0, 0x520208, 0xf8400748b8, 0x156, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:361 +0xe04
+encoding/json.(*encodeState).reflectValue(0xf84014e6e0, 0x520208, 0xf8400748b8, 0x156)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf84014e6e0, 0x517508, 0xf8402f4500, 0x166, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:408 +0xaa0
+encoding/json.(*encodeState).reflectValue(0xf84014e6e0, 0x517508, 0xf8402f4500, 0x166)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).reflectValueQuoted(0xf84014e6e0, 0x51ad90, 0xf84034cd80, 0x172, 0x100, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:399 +0x9e1
+encoding/json.(*encodeState).reflectValue(0xf84014e6e0, 0x51ad90, 0xf84034cd80, 0x172)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:242 +0x3a
+encoding/json.(*encodeState).marshal(0xf84014e6e0, 0x51ad80, 0xf84034cd80, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:213 +0x8d
+encoding/json.Marshal(0x51ad80, 0xf84034cd80, 0x4b0000004b, 0x51ad80, 0xf84034cd80, ...)
+	/usr/lib/go/src/pkg/encoding/json/encode.go:107 +0x5e
+main.(*LongPollHandler).ServeHTTP(0xf840062810, 0xf8400d10c0, 0xf8402662c0, 0xf84016e3c0, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:294 +0x557
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf8402662c0, 0xf84016e3c0, 0xf8402662c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf84014c120, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 57 [chan receive]:
+connectionmanager.(*ConnectionManager).SendMessage(0xf84005eca0, 0xf8402d57e0, 0x646900000002, 0xf840233663, 0x6c70706100000024, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/connectionmanager.go:196 +0x76
+main.(*LongPollHandler).ServeHTTP(0xf840062810, 0xf8400d10c0, 0xf8401b9200, 0xf8401ea240, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:266 +0x102
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf8401b9200, 0xf8401ea240, 0xf8401b9200, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf8401b8d20, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 58 [chan receive]:
+connectionmanager.(*ConnectionManager).SendMessage(0xf84005eca0, 0xf8400863c0, 0x646900000002, 0xf84013fd83, 0x6c70706100000024, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/connectionmanager.go:196 +0x76
+main.(*LongPollHandler).ServeHTTP(0xf840062810, 0xf8400d10c0, 0xf8401b9c40, 0xf840159900, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:266 +0x102
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf8401b9c40, 0xf840159900, 0xf8401b9c40, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf8401b8e40, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 59 [runnable]:
+syscall.Syscall()
+	/usr/lib/go/src/pkg/syscall/asm_linux_amd64.s:36 +0x64
+syscall.Write(0xf80000003d, 0xf84023b000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/syscall/zerrors_linux_amd64.go:2606 +0x78
+net.(*netFD).Write(0xf840095630, 0xf84023b000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/fd.go:518 +0x1a7
+net.(*TCPConn).Write(0xf8401545b0, 0xf84023b000, 0x100000001000, 0xf840076000, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:103 +0xce
+bufio.(*Writer).Flush(0xf840144380, 0xf8600000f86, 0xf840356000, 0x29ca00001d67)
+	/usr/lib/go/src/pkg/bufio/bufio.go:421 +0xb7
+bufio.(*Writer).Write(0xf840144380, 0xf840356000, 0x29ca00001d67, 0xa0d782500000000, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:457 +0x1a2
+net/http.(*response).Write(0xf8401b9300, 0xf840356000, 0x29ca00001d67, 0x172, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:502 +0x419
+main.writeReponse(0xf8400d10c0, 0xf8401b9300, 0xf840356000, 0x29ca00001d67, 0x0, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:128 +0x5c
+main.(*LongPollHandler).ServeHTTP(0xf840062810, 0xf8400d10c0, 0xf8401b9300, 0xf84023d000, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:306 +0x593
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf8401b9300, 0xf84023d000, 0xf8401b9300, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf8401b8f60, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 60 [chan receive]:
+connectionmanager.(*ConnectionManager).SendMessage(0xf84005eca0, 0xf840359720, 0x5d52d4, 0x6c62757000000008, 0x51fb60, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/connectionmanager.go:196 +0x76
+main.(*CommandHandler).ServeHTTP(0xf840062820, 0xf8400d10c0, 0xf84020a340, 0xf840159780, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:184 +0xe83
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf84020a340, 0xf840159780, 0xf84020a340, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf8401b8ae0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 61 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840095750, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840095750, 0xf840240000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401546c8, 0xf840240000, 0x100000001000, 0xf8400be840, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84005ee00, 0xf840240000, 0x100000001000, 0xf3300000000, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840144540, 0xf3300000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840144540, 0x7f19bf19890a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840144540, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84034f120, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84034f120, 0xf840159300, 0x0, 0x1000000005ca0a4)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840144540, 0xf840159300, 0x0, 0x0, 0x100000400be6f0, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401b89c0, 0xf8400d10c0, 0x0, 0x0, 0xf8401d9d00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401b89c0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 62 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840095900, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840095900, 0xf840253000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf840154738, 0xf840253000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84005ee60, 0xf840253000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840144640, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840144640, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840144640, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b460, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b460, 0xf8401926c0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840144640, 0xf8401926c0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401b88a0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401b88a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 64 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840260630, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840260630, 0xf84026c000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401549d8, 0xf84026c000, 0x100000001000, 0x6eb850, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84010c700, 0xf84026c000, 0x100000001000, 0x7f19bf194e28, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840144c00, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840144c00, 0x26ee70a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840144c00, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84010c1a0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84010c1a0, 0xf84018e480, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840144c00, 0xf84018e480, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401115a0, 0xf840086e40, 0x0, 0x0, 0x7f19beff9f00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401115a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 65 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840260090, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840260090, 0xf84026e000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5018, 0xf84026e000, 0x100000001000, 0x40bcf7, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf84010c2a0, 0xf84026e000, 0x100000001000, 0x8f, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401b9f00, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401b9f00, 0xf84027000a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401b9f00, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84010c7e0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84010c7e0, 0xf84025b180, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401b9f00, 0xf84025b180, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840111840, 0xf840086e40, 0x0, 0x0, 0x7f19b4fbaf00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840111840, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 66 [chan receive]:
+connectionmanager.(*ConnectionManager).SendMessage(0xf84005eca0, 0xf840367000, 0x5d52d4, 0x6c62757000000008, 0x51fb60, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/connectionmanager.go:196 +0x76
+main.(*CommandHandler).ServeHTTP(0xf840062820, 0xf8400d10c0, 0xf8402a68c0, 0xf840192540, 0xf800000000, ...)
+	/home/beej/src/go/connectionmanager/src/connectionmanager/examples/chat/chat.go:184 +0xe83
+net/http.(*ServeMux).ServeHTTP(0xf84005e960, 0xf8400d10c0, 0xf8402a68c0, 0xf840192540, 0xf8402a68c0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:941 +0xb9
+net/http.(*conn).serve(0xf840111a20, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:669 +0x621
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 67 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a3f0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a3f0, 0xf84027f000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5760, 0xf84027f000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209d60, 0xf84027f000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840144fc0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840144fc0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840144fc0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209bc0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209bc0, 0xf84018e600, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840144fc0, 0xf84018e600, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401ab720, 0xf840086e40, 0x0, 0x0, 0x7f19beffaf00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401ab720, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 68 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a480, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a480, 0xf840281000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5fd0, 0xf840281000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209dc0, 0xf840281000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8402668c0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8402668c0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8402668c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209be0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209be0, 0xf84018e6c0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8402668c0, 0xf84018e6c0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401ab8a0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401ab8a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 69 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a510, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a510, 0xf840283000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5f60, 0xf840283000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209e20, 0xf840283000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8402669c0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8402669c0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8402669c0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209c00, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209c00, 0xf84018e780, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8402669c0, 0xf84018e780, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401ab9c0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401ab9c0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 70 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a5a0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a5a0, 0xf840285000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a58d0, 0xf840285000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209e80, 0xf840285000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840266ac0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840266ac0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840266ac0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209c20, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209c20, 0xf84018e840, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840266ac0, 0xf84018e840, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401abb40, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401abb40, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 71 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a630, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a630, 0xf840287000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5e00, 0xf840287000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209ee0, 0xf840287000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840266bc0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840266bc0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840266bc0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b6e0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b6e0, 0xf840192480, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840266bc0, 0xf840192480, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401abd80, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401abd80, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 72 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8402606c0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8402606c0, 0xf84028c000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5698, 0xf84028c000, 0x100000001000, 0x6eb380, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209640, 0xf84028c000, 0x100000001000, 0x7f19bf1952a0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191d80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191d80, 0x26ee70a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191d80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b1a0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b1a0, 0xf8401ea3c0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191d80, 0xf8401ea3c0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401c7300, 0xf840086e40, 0x0, 0x0, 0x7f19bf038f00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401c7300, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 73 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401d25a0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401d25a0, 0xf84028f000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5cf0, 0xf84028f000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402096a0, 0xf84028f000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191c80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191c80, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191c80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b180, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b180, 0xf8401ea480, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191c80, 0xf8401ea480, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401c7480, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401c7480, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 74 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401d2510, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401d2510, 0xf840291000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5d60, 0xf840291000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209700, 0xf840291000, 0x100000001000, 0x40a3c2, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840191b80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840191b80, 0x7f19bf03ac0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840191b80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b9c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b9c0, 0xf840293000, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840191b80, 0xf840293000, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8401c75a0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8401c75a0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 75 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401d2480, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401d2480, 0xf840295000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5b98, 0xf840295000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209760, 0xf840295000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9f80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9f80, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9f80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b160, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b160, 0xf8401ea540, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9f80, 0xf8401ea540, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214360, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214360, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 76 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8400a0f30, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8400a0f30, 0xf840299000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5ca0, 0xf840299000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840294400, 0xf840299000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf84020a480, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf84020a480, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf84020a480, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209780, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209780, 0xf840159600, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf84020a480, 0xf840159600, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840297120, 0xf840086e40, 0x0, 0x0, 0x7f19bc1e1f00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840297120, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 77 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a6c0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a6c0, 0xf84029b000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5e88, 0xf84029b000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209f60, 0xf84029b000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840266c80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840266c80, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840266c80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b120, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b120, 0xf8401ea6c0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840266c80, 0xf8401ea6c0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214ba0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214ba0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 78 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a750, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a750, 0xf84029e000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5790, 0xf84029e000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209fc0, 0xf84029e000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840266d80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840266d80, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840266d80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b100, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b100, 0xf8401ea780, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840266d80, 0xf8401ea780, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214a80, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214a80, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 79 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a7e0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a7e0, 0xf8402a1000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5820, 0xf8402a1000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840294820, 0xf8402a1000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840266e80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840266e80, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840266e80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b000, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b000, 0xf8401ea840, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840266e80, 0xf8401ea840, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214960, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214960, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 80 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a870, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a870, 0xf8402a4000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401a5898, 0xf8402a4000, 0x100000001000, 0x40bcf7, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840294880, 0xf8402a4000, 0x100000001000, 0x56, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840266f80, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840266f80, 0xf8402a900a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840266f80, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf84015b040, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf84015b040, 0xf8401ea900, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840266f80, 0xf8401ea900, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214840, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214840, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 81 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a900, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a900, 0xf8402a7000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e19c8, 0xf8402a7000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402948e0, 0xf8402a7000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8402a6080, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8402a6080, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8402a6080, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402944c0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402944c0, 0xf8402930c0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8402a6080, 0xf8402930c0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214720, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214720, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 82 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027a990, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027a990, 0xf8402ac000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e18c8, 0xf8402ac000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840294940, 0xf8402ac000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8402a6180, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8402a6180, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8402a6180, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402944e0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402944e0, 0xf840293180, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8402a6180, 0xf840293180, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214600, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214600, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 83 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027aa20, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027aa20, 0xf8402b1000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e12f8, 0xf8402b1000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402949a0, 0xf8402b1000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8402a6280, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8402a6280, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8402a6280, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840294500, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840294500, 0xf840293240, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8402a6280, 0xf840293240, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8402144e0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8402144e0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 84 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf84027aab0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf84027aab0, 0xf8402ba000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1288, 0xf8402ba000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840294a00, 0xf8402ba000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8402a6380, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8402a6380, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8402a6380, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840294d80, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840294d80, 0xf8401c1f00, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8402a6380, 0xf8401c1f00, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840297c60, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840297c60, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 85 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf840141360, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf840141360, 0xf8402c4000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1560, 0xf8402c4000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840209880, 0xf8402c4000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9ec0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9ec0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9ec0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840294da0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840294da0, 0xf8401c1e40, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9ec0, 0xf8401c1e40, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214240, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214240, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 86 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401d23f0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401d23f0, 0xf8402c8000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e15e0, 0xf8402c8000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402098e0, 0xf8402c8000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401d9dc0, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401d9dc0, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401d9dc0, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840209900, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840209900, 0xf840159480, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401d9dc0, 0xf840159480, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840214c00, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840214c00, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 87 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8402d6870, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8402d6870, 0xf8402f9000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1b28, 0xf8402f9000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402e55c0, 0xf8402f9000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401b9c00, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401b9c00, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401b9c00, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402b5ac0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402b5ac0, 0xf8401eaa80, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401b9c00, 0xf8401eaa80, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf840086420, 0xf840086e40, 0x0, 0x0, 0x7f19b4fbcf00, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf840086420, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 88 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401b6f30, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401b6f30, 0xf840338000, 0x100000001000, 0x14ffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1bf8, 0xf840338000, 0x100000001000, 0x51fba0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402b5b20, 0xf840338000, 0x100000001000, 0x41db54, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401b9180, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401b9180, 0x26ee70a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401b9180, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840294f00, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840294f00, 0xf8401c1d80, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401b9180, 0xf8401c1d80, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8402d5960, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8402d5960, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 89 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401b6ea0, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401b6ea0, 0xf84033b000, 0x100000001000, 0x14ffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1c48, 0xf84033b000, 0x100000001000, 0x51fba0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840294f60, 0xf84033b000, 0x100000001000, 0x41db54, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840337080, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840337080, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840337080, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402b5b40, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402b5b40, 0xf8401eacc0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840337080, 0xf8401eacc0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84032c900, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84032c900, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 90 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8402d6900, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8402d6900, 0xf84033d000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1b98, 0xf84033d000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402b5ba0, 0xf84033d000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf8401b9080, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf8401b9080, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf8401b9080, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf840294f80, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf840294f80, 0xf8401c1cc0, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf8401b9080, 0xf8401c1cc0, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8402d5a80, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8402d5a80, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 91 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401b6e10, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401b6e10, 0xf84033f000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1cb8, 0xf84033f000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf840294fe0, 0xf84033f000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840337180, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840337180, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840337180, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402b5bc0, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402b5bc0, 0xf8401ead80, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840337180, 0xf8401ead80, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84032ca20, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84032ca20, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 92 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8402d6990, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8402d6990, 0xf840341000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1d08, 0xf840341000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402e5820, 0xf840341000, 0x100000001000, 0x40a3c2, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840337880, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840337880, 0x7f19bc01ec0a, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840337880, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402e5c00, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402e5c00, 0xf8401c1c00, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840337880, 0xf8401c1c00, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf8402d5ba0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf8402d5ba0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 93 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8401b6d80, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8401b6d80, 0xf840346000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1e28, 0xf840346000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402e5c60, 0xf840346000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840337280, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840337280, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840337280, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402e5840, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402e5840, 0xf8401eae40, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840337280, 0xf8401eae40, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84032cb40, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84032cb40, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
+
+goroutine 94 [chan receive]:
+net.(*pollServer).WaitRead(0xf84005dac0, 0xf8402d6a20, 0xf84005c150, 0xb, 0x1, ...)
+	/usr/lib/go/src/pkg/net/fd.go:268 +0x73
+net.(*netFD).Read(0xf8402d6a20, 0xf840349000, 0x100000001000, 0xffffffff, 0xf84005f000, ...)
+	/usr/lib/go/src/pkg/net/fd.go:428 +0x1ec
+net.(*TCPConn).Read(0xf8401e1d78, 0xf840349000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/tcpsock_posix.go:87 +0xce
+io.(*LimitedReader).Read(0xf8402e58a0, 0xf840349000, 0x100000001000, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/io/io.go:406 +0xc1
+bufio.(*Reader).fill(0xf840337980, 0x100000000000)
+	/usr/lib/go/src/pkg/bufio/bufio.go:77 +0xf0
+bufio.(*Reader).ReadSlice(0xf840337980, 0xa, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:257 +0x1b6
+bufio.(*Reader).ReadLine(0xf840337980, 0x0, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/bufio/bufio.go:286 +0x5b
+net/textproto.(*Reader).readLineSlice(0xf8402e5c80, 0xc0, 0x100000000, 0x1)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:55 +0x4f
+net/textproto.(*Reader).ReadLine(0xf8402e5c80, 0xf8401c1b40, 0x30, 0x0)
+	/usr/lib/go/src/pkg/net/textproto/reader.go:36 +0x25
+net/http.ReadRequest(0xf840337980, 0xf8401c1b40, 0x0, 0x0, 0x10000000440894, ...)
+	/usr/lib/go/src/pkg/net/http/request.go:457 +0xb1
+net/http.(*conn).readRequest(0xf84032ccc0, 0xf840086e40, 0x0, 0x0, 0x0, ...)
+	/usr/lib/go/src/pkg/net/http/server.go:240 +0xa8
+net/http.(*conn).serve(0xf84032ccc0, 0x0)
+	/usr/lib/go/src/pkg/net/http/server.go:607 +0x145
+created by net/http.(*Server).Serve
+	/usr/lib/go/src/pkg/net/http/server.go:1057 +0x430
