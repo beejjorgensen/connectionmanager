@@ -36,7 +36,7 @@ Segfaults:
     35      if(l->nlist < l->nlistmin)
     36          l->nlistmin = l->nlist;
     37      c->size -= size;
-^
+
     runtime.MCache_Alloc (c=void, sizeclass=void, size=void, zeroed=void)
         at /usr/lib/go/src/pkg/runtime/mcache.c:41
     41      v->next = nil;
@@ -57,9 +57,9 @@ Other:
     unexpected fault address 0x901f000a
     throw: fault
     [signal 0xb code=0x1 addr=0x901f000a pc=0x40a830]
-^
+
     throw: invalid free
-^
+
     panic: invalid memory address or nil pointer dereference
     throw: panic during gc
     [signal 0xb code=0x1 addr=0x1 pc=0x40a8e8]
