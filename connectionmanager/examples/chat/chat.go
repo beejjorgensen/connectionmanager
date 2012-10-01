@@ -42,11 +42,12 @@ type UserManager struct {
 }
 
 // Construct a new UserManager
-func NewUserManager() *UserManager {
-	userManager := new(UserManager)
-	userManager.nextGuestNumber = 1
-	userManager.idMap = make(map[string]string)
-	userManager.user = make(map[string]*User)
+func newUserManager() *UserManager {
+	userManager := &UserManager{
+		user: make(map[string]*User),
+		idMap: make(map[string]string),
+		nextGuestNumber: 1,
+	}
 
 	return userManager
 }
@@ -122,14 +123,14 @@ func makeStatusResponse(status string, message string) *response {
 }
 
 // Helper function to log errors in response writes
-func writeReponse(rw http.ResponseWriter, data []byte) {
-	n, err := rw.Write(data)
+func writeReponse(rw http.ResponseWriter, data *[]byte) {
+	n, err := rw.Write(*data)
 	if err != nil {
 		log.Printf("error writing command response: %v", err)
 		return
 	}
 
-	l := len(data)
+	l := len(*data)
 	if n != l {
 		log.Printf("command response short write: %d bytes (out of %d)", n, l)
 	}
@@ -187,7 +188,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
 		}
 
-		writeReponse(rw, jresp)
+		writeReponse(rw, &jresp)
 
 	case "broadcast":
 		// extract message
@@ -213,7 +214,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		writeReponse(rw, jresp)
+		writeReponse(rw, &jresp)
 
 	case "setusername":
 		userName = rq.FormValue("username")
@@ -242,7 +243,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
 		}
 
-		writeReponse(rw, jresp)
+		writeReponse(rw, &jresp)
 	}
 }
 
@@ -268,7 +269,7 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 		log.Printf("Chat: long poll request error: %s", resp.Err.Error())
 
 		jresp, _ := json.Marshal(*makeStatusResponse("error", resp.Err.Error()))
-		writeReponse(rw, jresp)
+		writeReponse(rw, &jresp)
 
 		return
 	}
@@ -301,7 +302,7 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	}
 
 	//log.Printf(">>>>> %s", string(jresp))
-	writeReponse(rw, jresp)
+	writeReponse(rw, &jresp)
 }
 
 // General file server
@@ -314,14 +315,15 @@ func fileHandler(rw http.ResponseWriter, r *http.Request) {
 func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 	userManager *UserManager) {
 
-	longPollHandler := new(LongPollHandler)
-	commandHandler := new(CommandHandler)
+	longPollHandler := &LongPollHandler{
+		connectionManager: connectionManager,
+		userManager: userManager,
+	}
 
-	longPollHandler.connectionManager = connectionManager
-	longPollHandler.userManager = userManager
-
-	commandHandler.connectionManager = connectionManager
-	commandHandler.userManager = userManager
+	commandHandler := &CommandHandler{
+		connectionManager: connectionManager,
+		userManager: userManager,
+	}
 
 	s := &http.Server{
 		Addr:           ":8080",
@@ -343,7 +345,7 @@ func main() {
 	log.Printf("num cpus: %v", runtime.NumCPU())
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	userManager := NewUserManager()
+	userManager := newUserManager()
 	connectionManager := connectionmanager.New()
 	connectionManager.SetActive(true)
 

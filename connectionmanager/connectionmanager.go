@@ -1,5 +1,5 @@
-//Package connectionmanager provides communication between connections who are
-//connected in different goroutines.
+//Package connectionmanager provides communication between connections
+//from different goroutines.
 package connectionmanager
 
 import (
