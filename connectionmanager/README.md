@@ -3,7 +3,6 @@ Connection Manager
 
 Do Not Use
 ==========
-
 This is not done at all.
 
 This is what I wrote to learn Go. It is a package that allows goroutines
@@ -12,11 +11,44 @@ broadcasting).
 
 It kinda works, but not well.
 
-It is posted here because I have seen a number of strange
-exceptions^H^H^H^H^H^H errors and panics and I was encouraged by a
-couple other Go enthusiasts to share it since the errors can be repro'd.
+It is posted here because I have seen a number of strange errors and
+panics and I was encouraged by a couple other Go enthusiasts to share it
+since the errors can be repro'd.
 
-Errors I have seen:
+I apologize for having such a complex "test case". I'll try to simplify
+it.
+
+Errors I've seen:
+
+    runtime.MCache_Alloc (c=void, sizeclass=void, size=void, zeroed=void)
+        at /usr/lib/go/src/pkg/runtime/mcache.c:33
+    33      l->list = v->next;
+    (gdb) l
+    28          l->list = first;
+    29          l->nlist = n;
+    30          c->size += n*size;
+    31      }
+    32      v = l->list;
+    33      l->list = v->next;
+    34      l->nlist--;
+    35      if(l->nlist < l->nlistmin)
+    36          l->nlistmin = l->nlist;
+    37      c->size -= size;
+
+    runtime.MCache_Alloc (c=void, sizeclass=void, size=void, zeroed=void)
+        at /usr/lib/go/src/pkg/runtime/mcache.c:41
+    41      v->next = nil;
+    (gdb) l
+    36          l->nlistmin = l->nlist;
+    37      c->size -= size;
+    38  
+    39      // v is zeroed except for the link pointer
+    40      // that we used above; zero that.
+    41      v->next = nil;
+    42      if(zeroed) {
+    43          // block is zeroed iff second word is zero ...
+    44          if(size > sizeof(uintptr) && ((uintptr*)v)[1] != 0)
+    45              runtime·memclr((byte*)v, size);
 
     unexpected fault address 0x901f000a
     throw: fault
@@ -35,7 +67,6 @@ rabbits. (See below.)
 
 Code Notes
 ----------
-
 Since I'm a Go beginner, if anyone has feedback in general, I'll take
 it.
 
@@ -44,7 +75,6 @@ of language features and see how it held up.
 
 Files
 -----
-
 connectionmanager.go: the package file
 
 examples/chat.go: a sample long-poll chat server that uses a
@@ -59,7 +89,6 @@ errors/: dumps of some errors I have seen
 
 Install
 -------
-
 You'll need go-uuid: http://code.google.com/p/go-uuid/
 
 In examples, note there is a webroot directory.
@@ -72,17 +101,15 @@ Install chat and rabbits.
 
 Run
 ---
-
 Run chat. In a browser (only tried chrome, but should work with any...
 har) bring up localhost port 8080. More windows == more fun.
 
 
 Repro Steps
 -----------
-
-1. Run chat (or chat 2> errorlog)
+1. Run chat (or chat 2> errorlog, or gdb chat)
 2. In another window, run rabbits
-3. If chat does not crash immediately, ^C out of rabbits, ^C out of
+3. If chat does not crash *immediately*, ^C out of rabbits, ^C out of
 chat, then goto 1.
 
 It usually takes me less than 10 tries to get one of those crashes.
@@ -97,7 +124,6 @@ often they chat.
 
 My Setup
 --------
-
 Arch Linux, go 1.0.3, 4 GB, AMD Phenom(tm) II X4 965 Processor quadcore
 
 chat and rabbits are coded to use NumCPUs threads.
