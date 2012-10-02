@@ -17,7 +17,9 @@ import (
 	"net/http"
 	"runtime"
 	"time"
+	"sync"
 )
+
 
 const WEBROOT = "/home/beej/src/go/libs/src/github.com/beej71/connectionmanager/examples/chat/webroot"
 
@@ -39,6 +41,10 @@ type UserManager struct {
 
 	// For making anonymous user names
 	nextGuestNumber int
+
+	// Mutexes
+	userMutex *sync.RWMutex
+	nextGuestNumberMutex *sync.Mutex
 }
 
 // Construct a new UserManager
@@ -47,6 +53,8 @@ func newUserManager() *UserManager {
 		user: make(map[string]*User),
 		idMap: make(map[string]string),
 		nextGuestNumber: 1,
+		userMutex: new(sync.RWMutex),
+		nextGuestNumberMutex: new(sync.Mutex),
 	}
 
 	return userManager
@@ -54,6 +62,9 @@ func newUserManager() *UserManager {
 
 // Autogenerate a unique printable username
 func (um *UserManager) nextGuestName() string {
+	um.nextGuestNumberMutex.Lock()
+	defer um.nextGuestNumberMutex.Unlock()
+
 	name := fmt.Sprintf("Guest%d", um.nextGuestNumber)
 	um.nextGuestNumber++
 
@@ -64,6 +75,9 @@ func (um *UserManager) nextGuestName() string {
 //
 // Returns pointer to user
 func (um *UserManager) addUser(id string, name string) *User {
+	um.userMutex.Lock()
+	defer um.userMutex.Unlock()
+
 	u, ok := um.user[id]
 
 	if name == "" {
@@ -77,7 +91,6 @@ func (um *UserManager) addUser(id string, name string) *User {
 		u.pubId = uuid.New() // v4 UUID
 
 		um.idMap[u.pubId] = id
-
 		um.user[u.id] = u
 	}
 
@@ -86,19 +99,26 @@ func (um *UserManager) addUser(id string, name string) *User {
 
 // Return a user by ID
 func (um *UserManager) getUserById(id string) (*User, bool) {
+	um.userMutex.RLock()
+	defer um.userMutex.RUnlock()
+
 	u, ok := um.user[id]
+
 	return u, ok
 }
 
 // Return a user by PubID
 func (um *UserManager) getUserByPubId(pid string) (*User, bool) {
-	id, ok := um.idMap[pid]
+	um.userMutex.RLock()
+	defer um.userMutex.RUnlock()
 
+	id, ok := um.idMap[pid]
 	if !ok {
 		return nil, ok
 	}
 
-	return um.getUserById(id)
+	u, ok := um.user[id]
+	return u, ok
 }
 
 // Handler for user command requests (implements http.Handler)
