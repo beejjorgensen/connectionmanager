@@ -83,7 +83,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 
 		// if ok, record in our user list
 		if resp.Err == nil {
-			user := h.userManager.addUser(id, userName)
+			user, _ := h.userManager.AddUser(id, userName)
 			jresp, _ = json.Marshal(response{
 				"type":     "loginresponse",
 				"id":       id,
@@ -115,9 +115,9 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 		// extract message
 		msg := rq.FormValue("message")
 
-		user, ok := h.userManager.getUserById(id)
+		user, err := h.userManager.GetUserByID(id)
 
-		if ok {
+		if err == nil {
 			// send the broadcast request
 			h.connectionManager.SendMessage(&connectionmanager.Message{
 				Type: connectionmanager.BroadcastRequest,
@@ -132,7 +132,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("ok", ""))
 
 		} else {
-			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
+			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("%v", err)))
 		}
 
 		writeReponse(rw, &jresp)
@@ -140,9 +140,9 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	case "setusername":
 		userName = rq.FormValue("username")
 
-		user, ok := h.userManager.getUserById(id)
+		user, err := h.userManager.GetUserByID(id)
 
-		if ok {
+		if err == nil {
 			// broadcast that we're changing our username
 			h.connectionManager.SendMessage(&connectionmanager.Message{
 				Type: connectionmanager.BroadcastRequest,
@@ -161,7 +161,7 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 			jresp, _ = json.Marshal(*makeStatusResponse("ok", ""))
 
 		} else {
-			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("user not found: %s", id)))
+			jresp, _ = json.Marshal(*makeStatusResponse("error", fmt.Sprintf("%v", err)))
 		}
 
 		writeReponse(rw, &jresp)
@@ -266,7 +266,8 @@ func main() {
 	log.Printf("num cpus: %v", runtime.NumCPU())
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	userManager := newUserManager()
+	userManager := NewUserManager()
+	userManager.Start()
 	connectionManager := connectionmanager.New()
 	connectionManager.SetActive(true)
 
