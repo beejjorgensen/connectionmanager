@@ -57,7 +57,7 @@ function addChatMessage(username, msg) {
 	var msgclass;
 	
 	if (username) {
-		html += '<span class="chat-username">' + username + '</span>&nbsp;';
+		html += '<span class="chat-username">' + username + '</span>';
 		html += '<span class="chat-sep">:</span>&nbsp;';
 		msgclass = 'chat-message';
 	} else {
