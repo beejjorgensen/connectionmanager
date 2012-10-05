@@ -26,6 +26,7 @@ func robotPoller(id string) {
 	var payload interface{}
 
 	transport := new(http.Transport)
+	transport.DisableKeepAlives = true
 	client := &http.Client{Transport: transport}
 
 	for {
@@ -95,6 +96,7 @@ func robot() {
 	var payload interface{}
 
 	transport := new(http.Transport)
+	transport.DisableKeepAlives = true
 	client := &http.Client{Transport: transport}
 
 	id := uuid.New()
@@ -192,9 +194,9 @@ func main() {
 		minDelay = 5000 // ms
 		maxDelay = 20000
 	*/
-	connectionCount = 200
-	minDelay = 500 // ms
-	maxDelay = 1500
+	connectionCount = 20 
+	minDelay = 1500 // ms
+	maxDelay = 4000
 
 	for i := 0; i < connectionCount; i++ {
 		go robot()
