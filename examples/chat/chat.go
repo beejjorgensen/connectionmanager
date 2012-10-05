@@ -15,7 +15,7 @@ import (
 	"log"
 	"net/http"
 	"runtime"
-	"time"
+	//"time"
 )
 
 const WEBROOT = "/home/beej/src/go/libs/src/github.com/beej71/connectionmanager/examples/chat/webroot"
@@ -59,6 +59,8 @@ func writeReponse(rw http.ResponseWriter, data *[]byte) {
 
 // Service user command HTTP requests
 func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
+	defer rq.Body.Close()
+
 	rw.Header().Set("Content-Type", "application/json")
 
 	var userName string
@@ -170,6 +172,8 @@ func (h *CommandHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 
 // Service long-poll HTTP requests
 func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
+	defer rq.Body.Close()
+
 	var jresp []byte
 
 	rw.Header().Set("Content-Type", "application/json")
@@ -230,6 +234,7 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 func fileHandler(rw http.ResponseWriter, r *http.Request) {
 	filePath := fmt.Sprintf("%s%s", WEBROOT, r.URL.RequestURI())
 	http.ServeFile(rw, r, filePath)
+	r.Body.Close()
 }
 
 // Sets up the handlers and runs the HTTP server (run as a goroutine)
@@ -249,8 +254,8 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 	s := &http.Server{
 		Addr:           ":8080",
 		Handler:        nil,
-		ReadTimeout:    120 * time.Second,
-		WriteTimeout:   2 * time.Second,
+		//ReadTimeout:    120 * time.Second,
+		//WriteTimeout:   2 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 
