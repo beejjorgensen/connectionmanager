@@ -3,6 +3,7 @@ package main
 
 import (
 	"code.google.com/p/go-uuid/uuid"
+	"launchpad.net/gnuflag"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -12,14 +13,15 @@ import (
 	"net/url"
 	"runtime"
 	"time"
+	"os"
 )
 
 const msgurl = "http://127.0.0.1:8080/cmd"
 const pollurl = "http://127.0.0.1:8080/poll"
 
 var connectionCount int
-var minDelay int32
-var maxDelay int32
+var minDelay int
+var maxDelay int
 
 // Goroutine to run a long poll thread for a robot
 func robotPoller(id string) {
@@ -180,10 +182,17 @@ func robot() {
 		}
 
 		// sleep a bit
-		time.Sleep(time.Duration((rand.Int31n(maxDelay-minDelay) + minDelay)) * time.Millisecond)
+		duration := rand.Int31n(int32(maxDelay-minDelay)) + int32(minDelay)
+		time.Sleep(time.Duration(duration) * time.Millisecond)
 
 		transport.CloseIdleConnections()
 	}
+}
+
+// Usage
+func usage() {
+	fmt.Fprintf(os.Stderr, "usage %s [options]\n", os.Args[0])
+	gnuflag.PrintDefaults()
 }
 
 // Main
@@ -193,10 +202,29 @@ func main() {
 		connectionCount = 200
 		minDelay = 5000 // ms
 		maxDelay = 20000
-	*/
 	connectionCount = 20 
 	minDelay = 1500 // ms
 	maxDelay = 4000
+	*/
+
+	gnuflag.Usage = usage
+
+	gnuflag.IntVar(&connectionCount, "c", 20, "number of simultaneous bots to run")
+	gnuflag.IntVar(&minDelay, "n", 1500, "minimum delay time between chats (ms)")
+	gnuflag.IntVar(&maxDelay, "x", 4000, "maximum delay time between chats (ms)")
+
+	gnuflag.Parse(true)
+
+	if connectionCount < 1 || minDelay < 0 || maxDelay < 0 {
+		usage()
+		os.Exit(1)
+	}
+
+	if minDelay > maxDelay {
+		t := minDelay
+		minDelay = maxDelay
+		maxDelay = t
+	}
 
 	for i := 0; i < connectionCount; i++ {
 		go robot()
