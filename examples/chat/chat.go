@@ -18,7 +18,7 @@ import (
 	//"time"
 )
 
-const WEBROOT = "/home/beej/src/go/libs/src/github.com/beejjorgensen/connectionmanager/examples/chat/webroot"
+const WEBROOT = "/home/beej/src/go/src/github.com/beejjorgensen/connectionmanager/examples/chat/webroot"
 
 type response map[string]interface{}
 
