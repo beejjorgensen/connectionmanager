@@ -11,7 +11,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/beej71/connectionmanager"
+	"github.com/beejjorgensen/connectionmanager"
 	"log"
 	"net/http"
 	"runtime"
