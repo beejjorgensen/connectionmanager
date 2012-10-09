@@ -11,3 +11,9 @@ Usage
 Point a browser to http://localhost:8080/ (or whichever host and port
 you have it running on.)
 
+TODO
+----
+* Handle logouts
+* Handle idle users
+* Add name changing to UI
+* Add a console thing

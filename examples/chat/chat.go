@@ -1,12 +1,6 @@
 // A long-polling HTTP chat server
 package main
 
-// TODO:
-//
-// add some kind of console thing?
-// handle users who leave
-// handle idle users
-
 import (
 	"encoding/json"
 	"errors"

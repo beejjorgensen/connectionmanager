@@ -9,8 +9,6 @@ This is what I wrote to learn Go. It is a package that allows goroutines
 to pass messages over channels, identifying the recipient by ID (or
 broadcasting).
 
-It kinda works, but not well.
-
 I originally posted this because I was getting weird low-level crashes.
 It was due to multiple goroutines accessing the same map without a lock.
 Thanks, go-nuts!
@@ -34,23 +32,20 @@ examples/webchat: HTML/JS page for talking to the chat server
 
 examples/rabbits/rabbits.go: bot chatters for hammering the server
 
-Install
--------
-In examples, note there is a webroot directory.
+Install and Run
+---------------
+See the README in the examples/chat directory.
 
-Edit chat.go and change WEBROOT to the absolute path to that webroot
-directory. Search for 8080 and change the port if you want to use a
-different one.
-
-Install chat and rabbits.
-
-Run
----
-Run chat. In a browser (only tried chrome, but should work with any...
-har) bring up localhost port 8080. More windows == more fun.
-
-
-rabbits starts a bunch of bot connections. It can be tuned in its main.
+TODO
+----
+* Get rid of ConnectRequest? Just add new UIDs when events happen?
+* Add timeout to eliminate old connections
+* Throw away old messages if list gets large
+* Helper functions for SendMessage?
+* Allow user to turn polling off explicitly
+* Unicast message
+* Multicast message
+* Multicast groups (pub/sub-style)
 
 Bugs
 ----

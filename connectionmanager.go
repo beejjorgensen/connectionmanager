@@ -9,14 +9,6 @@ import (
 	//"log"
 )
 
-// TODO: get rid of ConnectRequest? Just add new UIDs when events happen?
-// TODO: add timeout to exliminate old connections
-// TODO: throw away old messages if list gets large
-// TODO: helper functions for SendMessage?
-// TODO: allow user to turn polling off explicitly
-// TODO: unicast message
-// TODO: multicast message (register multicast groups?)
-
 // Message type identifiers
 type MessageType int32
 
