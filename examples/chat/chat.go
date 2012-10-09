@@ -230,13 +230,6 @@ func (h *LongPollHandler) ServeHTTP(rw http.ResponseWriter, rq *http.Request) {
 	writeReponse(rw, &jresp)
 }
 
-// General file server
-func fileHandler(rw http.ResponseWriter, r *http.Request) {
-	filePath := fmt.Sprintf("%s%s", WEBROOT, r.URL.RequestURI())
-	http.ServeFile(rw, r, filePath)
-	r.Body.Close()
-}
-
 // Sets up the handlers and runs the HTTP server (run as a goroutine)
 func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 	userManager *UserManager) {
@@ -261,7 +254,7 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 
 	http.Handle("/poll", longPollHandler)
 	http.Handle("/cmd", commandHandler)
-	http.HandleFunc("/", fileHandler)
+	http.Handle("/", http.FileServer(http.Dir(WEBROOT)))
 
 	log.Fatal(s.ListenAndServe())
 }

@@ -12,8 +12,3 @@ Run chat on your server or localhost (see note about security, below).
 Point a browser to http://localhost:8080/ (or whichever host you have it
 running on.)
 
-Bugs
-----
-There is likely a security issue serving arbitrary files outside of
-WEBROOT.
-
