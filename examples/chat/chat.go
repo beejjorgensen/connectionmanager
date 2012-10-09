@@ -9,15 +9,15 @@ package main
 
 import (
 	"encoding/json"
-	"launchpad.net/gnuflag"
+	"errors"
 	"fmt"
 	"github.com/beejjorgensen/connectionmanager"
+	"launchpad.net/gnuflag"
 	"log"
 	"net/http"
-	"runtime"
-	"path/filepath"
-	"errors"
 	"os"
+	"path/filepath"
+	"runtime"
 	//"time"
 )
 
@@ -251,8 +251,8 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 	}
 
 	s := &http.Server{
-		Addr:           fmt.Sprintf(":%s", webport),
-		Handler:        nil,
+		Addr:    fmt.Sprintf(":%s", webport),
+		Handler: nil,
 		//ReadTimeout:    120 * time.Second,
 		//WriteTimeout:   2 * time.Second,
 		MaxHeaderBytes: 1 << 20,
