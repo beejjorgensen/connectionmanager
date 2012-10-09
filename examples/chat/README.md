@@ -4,11 +4,10 @@ Demo long-polling chat server to test the connection manager.
 
 Usage
 -----
-Edit chat.go and set the WEBROOT to the absolute path of the webroot/
-directory. Search for 8080 if you want to change to another port.
+    usage: chat -r webroot [options]
 
-Run chat on your server or localhost (see note about security, below).
+       -p port    listening port (default 8080)
 
-Point a browser to http://localhost:8080/ (or whichever host you have it
-running on.)
+Point a browser to http://localhost:8080/ (or whichever host and port
+you have it running on.)
 

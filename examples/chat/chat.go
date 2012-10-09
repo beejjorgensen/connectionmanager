@@ -4,21 +4,27 @@ package main
 // TODO:
 //
 // add some kind of console thing?
-// get WEBROOT on command line or environment
 // handle users who leave
 // handle idle users
 
 import (
 	"encoding/json"
+	"launchpad.net/gnuflag"
 	"fmt"
 	"github.com/beejjorgensen/connectionmanager"
 	"log"
 	"net/http"
 	"runtime"
+	"path/filepath"
+	"errors"
+	"os"
 	//"time"
 )
 
-const WEBROOT = "/home/beej/src/go/src/github.com/beejjorgensen/connectionmanager/examples/chat/webroot"
+const webportDefault = "8080"
+
+var webroot string
+var webport string
 
 type response map[string]interface{}
 
@@ -245,7 +251,7 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 	}
 
 	s := &http.Server{
-		Addr:           ":8080",
+		Addr:           fmt.Sprintf(":%s", webport),
 		Handler:        nil,
 		//ReadTimeout:    120 * time.Second,
 		//WriteTimeout:   2 * time.Second,
@@ -254,15 +260,64 @@ func runWebServer(connectionManager *connectionmanager.ConnectionManager,
 
 	http.Handle("/poll", longPollHandler)
 	http.Handle("/cmd", commandHandler)
-	http.Handle("/", http.FileServer(http.Dir(WEBROOT)))
+	http.Handle("/", http.FileServer(http.Dir(webroot)))
 
 	log.Fatal(s.ListenAndServe())
 }
 
+// test to see if the webroot is ok to use
+func webrootCheck() error {
+	fi, err := os.Stat(webroot)
+	if err != nil {
+		return err
+	}
+
+	fm := fi.Mode()
+
+	if !fm.IsDir() {
+		return errors.New("not a directory")
+	}
+
+	// TODO check perms
+
+	return nil
+}
+
+// usage message
+func usage() {
+	fmt.Fprintf(os.Stderr, "usage: %s -r webroot [options]\n", filepath.Base(os.Args[0]))
+	fmt.Fprintf(os.Stderr, "\n")
+	fmt.Fprintf(os.Stderr, "   -p port    listening port (default %s)\n", webportDefault)
+	fmt.Fprintf(os.Stderr, "\n")
+}
+
+// exit with an error message and status
+func errorExit(s string, status int) {
+	fmt.Fprintf(os.Stderr, "%s: %s\n", filepath.Base(os.Args[0]), s)
+	os.Exit(status)
+}
+
 // main
 func main() {
-	log.Printf("num cpus: %v", runtime.NumCPU())
+	//log.Printf("num cpus: %v", runtime.NumCPU())
 	runtime.GOMAXPROCS(runtime.NumCPU())
+
+	gnuflag.Usage = usage
+
+	gnuflag.StringVar(&webroot, "r", "", "root directory for webserving")
+	gnuflag.StringVar(&webport, "p", webportDefault, "listening port")
+
+	gnuflag.Parse(true)
+
+	if webroot == "" {
+		usage()
+		os.Exit(1)
+	}
+
+	e := webrootCheck()
+	if e != nil {
+		errorExit(fmt.Sprintf("%s: %v", webroot, e), 2)
+	}
 
 	userManager := NewUserManager()
 	userManager.Start()
